@@ -4,17 +4,17 @@ import '@mdi/font/css/materialdesignicons.min.css'; // Import Material Design Ic
 
 const App = () => {
   const widgetSettings = {
-    horizontalAnim: false,
+    horizontalAnim: true,
     fontSize: 20,
     iconSize: 100,
-    buttonWidth: 400,
-    buttonHeight: 300,
-    originalColor: "#00ffff",
+    // buttonWidth: 400,
+    // buttonHeight: 300,
+    originalColor: "black",
     hoverColor: "#cccccc",
     activeColor: "#aaaaaa",
     selectedIcon: "mdi:home", // Use Material Design Icon (mdi)
     text: "Hello, World!",
-    spaceBetween: 10,
+    spaceBetween: 0,
   };
 
   const handleAction = (event) => {
