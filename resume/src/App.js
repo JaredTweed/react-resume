@@ -7,9 +7,9 @@ const App = () => {
     horizontalAnim: false,
     fontSize: 20,
     iconSize: 100,
-    buttonWidth: "400px",
-    buttonHeight: "300px",
-    originalColor: "#ffffff",
+    buttonWidth: 400,
+    buttonHeight: 300,
+    originalColor: "#00ffff",
     hoverColor: "#cccccc",
     activeColor: "#aaaaaa",
     selectedIcon: "mdi:home", // Use Material Design Icon (mdi)
