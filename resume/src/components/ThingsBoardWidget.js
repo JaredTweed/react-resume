@@ -10,56 +10,45 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
   // Default settings
   const defaultSettings = {
     horizontalAnim: false,
-    fontSize: 20,
+    fontSize: "20px",
+    fontWeight: 400,
+    border: "none",
     iconSize: 100,
     buttonWidth: 300,
     buttonHeight: 200,
-    originalColor: "black",
-    hoverColor: "#cccccc",
-    activeColor: "#aaaaaa",
-    selectedIcon: "mdi:star",
-    text: "Button",
+    color: "black",
+    selectedIcon: "mdi:home",
+    text: "Use &lt;br&gt; for<br>a newline",
     textColor: "white",
     spaceBetween: 0,
     iconColor: "white",
-    iconHoverColor: "blue",
-    iconActiveColor: "red",
+    borderRadius: "20px",
   };
 
   // Merge user settings with defaults
-  const finalSettings = { ...defaultSettings, ...settings };
+  const fs = { ...defaultSettings, ...settings };
+
+  fs.textActiveColor = fs.textActiveColor || fs.textColor;
+  fs.iconHoverColor = fs.iconHoverColor || fs.iconColor;
+  fs.iconActiveColor = fs.iconActiveColor || fs.iconHoverColor;
+  fs.hoverColor = fs.hoverColor || fs.color;
+  fs.activeColor = fs.activeColor || fs.hoverColor;
+  fs.hoverBorder = fs.hoverBorder || fs.border;
+  fs.activeBorder = fs.activeBorder || fs.hoverBorder;
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    const {
-      horizontalAnim,
-      fontSize,
-      iconSize,
-      buttonWidth,
-      buttonHeight,
-      originalColor,
-      hoverColor,
-      activeColor,
-      selectedIcon,
-      text,
-      textColor,
-      spaceBetween,
-      iconColor,
-      iconHoverColor,
-      iconActiveColor,
-    } = finalSettings;
-
     let preCalculatedNum1, preCalculatedNum2, preCalculatedNum3, preCalculatedNum4, preCalculatedNum5;
-    console.log(buttonHeight, buttonWidth);
+    // console.log(buttonHeight, buttonWidth);
 
-    const iconHTML = selectedIcon?.startsWith("mdi:")
-      ? `<i class="mdi mdi-${selectedIcon.replace("mdi:", "")}" 
+    const iconHTML = fs.selectedIcon?.startsWith("mdi:")
+      ? `<i class="mdi mdi-${fs.selectedIcon.replace("mdi:", "")}" 
            style="
-             font-size: ${Math.min(buttonHeight, buttonWidth) * (iconSize / 100)}px; 
-             height: ${buttonHeight < buttonWidth ? `${iconSize * 0.7}%` : `${buttonWidth * (iconSize / 100) * 0.7}px`};
-             width: ${(Math.min(buttonHeight, buttonWidth) * (iconSize / 100)) * 0.84}px; 
+             font-size: ${Math.min(fs.buttonHeight, fs.buttonWidth) * (fs.iconSize / 100)}px; 
+             height: ${fs.buttonHeight < fs.buttonWidth ? `${fs.iconSize * 0.7}%` : `${fs.buttonWidth * (fs.iconSize / 100) * 0.7}px`};
+             width: ${(Math.min(fs.buttonHeight, fs.buttonWidth) * (fs.iconSize / 100)) * 0.84}px; 
              position: absolute; 
              left: 50%; 
              top: 50%; 
@@ -69,24 +58,25 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
              align-items: center; 
              transition: all 0.3s ease-in-out;">
          </i>`
-      : `<tb-icon style="font-size: ${iconSize}px;">${selectedIcon}</tb-icon>`;
+      : `<tb-icon style="font-size: ${fs.iconSize}px;">${fs.selectedIcon}</tb-icon>`;
 
     container.innerHTML = `
       ${iconHTML}
       <div id="text-overlay" 
            style="
               position: absolute;
-              font-size: ${fontSize}px;
-              color: ${textColor};
+              font-size: ${fs.fontSize};
+              font-weight: ${fs.fontWeight};
+              color: ${fs.textColor};
               left: 50%;
               top: 50%;
               white-space: nowrap;
               opacity: 0;
-              text-align: ${horizontalAnim ? "left" : "center"};
+              text-align: ${fs.horizontalAnim ? "left" : "center"};
               transform: translate(-50%, -50%);
               transition: all 0.25s ease-in-out;
           ">
-          ${text}
+          ${fs.text}
       </div>
     `;
 
@@ -95,26 +85,27 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
     let mouseover = false;
 
     const cacheDimensions = () => {
-      const iconWidth = (Math.min(buttonHeight, buttonWidth) * (iconSize / 100)) * 0.84;
-      // const iconHeight = icon.offsetHeight;
-      const iconHeight = Math.round(buttonHeight < buttonWidth ? iconSize * 0.7 * 0.01 * buttonHeight : buttonWidth * (iconSize / 100) * 0.7);
+      // const iconWidth = (Math.min(buttonHeight, buttonWidth) * (iconSize / 100)) * 0.84;
+      // const iconHeight = Math.round(buttonHeight < buttonWidth ? iconSize * 0.7 * 0.01 * buttonHeight : buttonWidth * (iconSize / 100) * 0.7);
+      const iconWidth = icon.offsetWidth;
+      const iconHeight = icon.offsetHeight;
       const textWidth = textOverlay.offsetWidth;
       const textHeight = textOverlay.offsetHeight;
 
       console.log(iconWidth, textWidth, iconHeight, textHeight);
 
-      const totalWidth = iconWidth + textWidth + spaceBetween;
-      const totalHeight = iconHeight + textHeight + spaceBetween;
+      const totalWidth = iconWidth + textWidth + fs.spaceBetween;
+      const totalHeight = iconHeight + textHeight + fs.spaceBetween;
 
       // Pre-calculate values for smooth positioning
       preCalculatedNum1 = totalWidth / 2;
-      preCalculatedNum2 = totalWidth / 2 - textWidth + 3 + spaceBetween;
+      preCalculatedNum2 = totalWidth / 2 - textWidth + 3 + fs.spaceBetween;
       preCalculatedNum3 = totalHeight / 2;
-      preCalculatedNum4 = totalHeight / 2 - textHeight + spaceBetween;
+      preCalculatedNum4 = totalHeight / 2 - textHeight + fs.spaceBetween;
       preCalculatedNum5 = totalHeight / 2 - textHeight * 1.5;
 
       // Apply transformations for non-horizontal and non-mouseover states
-      if (!horizontalAnim && !mouseover) {
+      if (!fs.horizontalAnim && !mouseover) {
         textOverlay.style.transform = `translate(-50%, ${preCalculatedNum5}px)`;
       }
     };
@@ -127,7 +118,7 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
       textOverlay.style.opacity = "1";
 
       cacheDimensions();
-      if (horizontalAnim) {
+      if (fs.horizontalAnim) {
         icon.style.transform = `translate(-${preCalculatedNum1}px, -50%)`;
         textOverlay.style.transform = `translate(${preCalculatedNum2}px, -50%)`;
       } else {
@@ -135,7 +126,8 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
         textOverlay.style.transform = `translate(-50%, ${preCalculatedNum4}px)`;
       }
 
-      icon.style.color = iconHoverColor;
+      icon.style.color = fs.iconHoverColor;
+      container.style.border = fs.hoverBorder;
     };
 
     const handleMouseOut = () => {
@@ -143,25 +135,30 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
       setHoverState(false);
       textOverlay.style.opacity = "0";
       icon.style.transform = "translate(-50%, -50%)";
-      if (horizontalAnim) {
+      if (fs.horizontalAnim) {
         textOverlay.style.transform = 'translate(-50%, -50%)'; // Reset text position
       } else {
         textOverlay.style.transform = `translate(-50%, ${preCalculatedNum5}px)`;
       }
 
-      icon.style.color = iconColor;
+      icon.style.color = fs.iconColor;
+      container.style.border = fs.border;
     };
 
     const handleMouseDown = () => {
       setActiveState(true);
-      icon.style.color = iconActiveColor; // Apply active color to icon
-      container.style.backgroundColor = activeColor;
+      icon.style.color = fs.iconActiveColor; // Apply active color to icon
+      container.style.backgroundColor = fs.activeColor;
+      textOverlay.style.color = fs.textActiveColor;
+      container.style.border = fs.activeBorder;
     };
 
     const handleMouseUp = () => {
       setActiveState(false);
-      icon.style.color = iconHoverColor; // Reset to hover color
-      container.style.backgroundColor = hoverColor;
+      icon.style.color = fs.iconHoverColor; // Reset to hover color
+      container.style.backgroundColor = fs.hoverColor;
+      textOverlay.style.color = fs.textColor;
+      container.style.border = fs.hoverBorder;
     };
 
     const handleClick = (event) => {
@@ -176,15 +173,6 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
     container.addEventListener("mouseup", handleMouseUp);
     container.addEventListener("click", handleClick);
 
-    const updateIconSize = () => {
-      if (icon) {
-        const newFontSize = `${Math.min(buttonHeight, buttonWidth) * (iconSize / 100)}px`;
-        icon.style.fontSize = newFontSize;
-        // icon.style.color = iconColor;
-      }
-    };
-
-    updateIconSize()
     handleMouseOut()
 
     return () => {
@@ -198,15 +186,15 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
 
   const containerStyle = {
     position: "relative",
-    width: `${finalSettings.buttonWidth}px`,
-    height: `${finalSettings.buttonHeight}px`,
-    border: "1px solid black",
-    borderRadius: "10px",
+    width: `${fs.buttonWidth}px`,
+    height: `${fs.buttonHeight}px`,
+    border: `${fs.border}`,
+    borderRadius: `${fs.borderRadius}`,
     backgroundColor: activeState
-      ? finalSettings.activeColor
+      ? fs.activeColor
       : hoverState
-        ? finalSettings.hoverColor
-        : finalSettings.originalColor,
+        ? fs.hoverColor
+        : fs.color,
     cursor: "pointer",
     overflow: "hidden",
     transition: "background-color 0.1s ease-in-out",
