@@ -9,25 +9,30 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
 
   // Default settings
   const defaultSettings = {
-    horizontalAnim: false,
+    horizontalAnim: true,
     fontSize: "20px",
-    fontWeight: 400,
+    fontWeight: 700,
     border: "none",
+    shadow: "none",
     iconSize: 100,
-    buttonWidth: 300,
-    buttonHeight: 200,
+    iconBorder: "none",
+    iconBorderRadius: "10px",
+    width: 200,
+    height: 70,
     color: "black",
     selectedIcon: "mdi:home",
     text: "Use &lt;br&gt; for<br>a newline",
     textColor: "white",
-    spaceBetween: 0,
     iconColor: "white",
     borderRadius: "20px",
+    link: null,
   };
 
   // Merge user settings with defaults
   const fs = { ...defaultSettings, ...settings };
 
+  // Defaults dependent on final settings
+  fs.spaceBetween = fs.selectedIcon?.startsWith("mdi:") ? 0 : fs.spaceBetween || fs.horizontalAnim ? 5 : 0;
   fs.textActiveColor = fs.textActiveColor || fs.textColor;
   fs.iconHoverColor = fs.iconHoverColor || fs.iconColor;
   fs.iconActiveColor = fs.iconActiveColor || fs.iconHoverColor;
@@ -35,30 +40,43 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
   fs.activeColor = fs.activeColor || fs.hoverColor;
   fs.hoverBorder = fs.hoverBorder || fs.border;
   fs.activeBorder = fs.activeBorder || fs.hoverBorder;
+  fs.hoverShadow = fs.hoverShadow || fs.shadow;
+  fs.activeShadow = fs.activeShadow || fs.hoverShadow;
 
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
     let preCalculatedNum1, preCalculatedNum2, preCalculatedNum3, preCalculatedNum4, preCalculatedNum5;
-    // console.log(buttonHeight, buttonWidth);
 
     const iconHTML = fs.selectedIcon?.startsWith("mdi:")
-      ? `<i class="mdi mdi-${fs.selectedIcon.replace("mdi:", "")}" 
+      ? `<i id="icon" class="mdi mdi-${fs.selectedIcon.replace("mdi:", "")}" 
            style="
-             font-size: ${Math.min(fs.buttonHeight, fs.buttonWidth) * (fs.iconSize / 100)}px; 
-             height: ${fs.buttonHeight < fs.buttonWidth ? `${fs.iconSize * 0.7}%` : `${fs.buttonWidth * (fs.iconSize / 100) * 0.7}px`};
-             width: ${(Math.min(fs.buttonHeight, fs.buttonWidth) * (fs.iconSize / 100)) * 0.84}px; 
-             position: absolute; 
-             left: 50%; 
-             top: 50%; 
-             transform: translate(-50%, -50%); 
-             display: flex; 
-             justify-content: center; 
-             align-items: center; 
-             transition: all 0.3s ease-in-out;">
+              font-size: ${Math.min(fs.height, fs.width) * (fs.iconSize / 100)}px; 
+              height: ${fs.height < fs.width ? `${fs.iconSize * 0.7}%` : `${fs.width * (fs.iconSize / 100) * 0.7}px`};
+              width: ${(Math.min(fs.height, fs.width) * (fs.iconSize / 100)) * 0.84}px; 
+              position: absolute; 
+              left: 50%; 
+              top: 50%; 
+              transform: translate(-50%, -50%); 
+              display: flex; 
+              justify-content: center; 
+              align-items: center; 
+              transition: all 0.3s ease-in-out;">
          </i>`
-      : `<tb-icon style="font-size: ${fs.iconSize}px;">${fs.selectedIcon}</tb-icon>`;
+      : `<img id="icon" src="${fs.selectedIcon}" 
+            alt="icon"
+            style="
+              width: ${fs.width < fs.height ? (fs.iconSize * 0.7) + '%' : 'auto'};
+              height: ${fs.width > fs.height ? (fs.iconSize * 0.7) + '%' : 'auto'};
+              position: absolute;
+              border: ${fs.iconBorder};
+              border-radius: ${fs.iconBorderRadius};
+              left: 50%;
+              top: 50%;
+              transform: translate(-50%, -50%);
+              transition: all 0.3s ease-in-out;">
+          </img>`;
 
     container.innerHTML = `
       ${iconHTML}
@@ -67,6 +85,8 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
               position: absolute;
               font-size: ${fs.fontSize};
               font-weight: ${fs.fontWeight};
+              font-family: 'Poppins', sans-serif;
+              line-height: 1.2;
               color: ${fs.textColor};
               left: 50%;
               top: 50%;
@@ -80,19 +100,31 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
       </div>
     `;
 
-    const icon = container.querySelector(".mdi, .icon");
+    const icon = container.querySelector("#icon");
     const textOverlay = container.querySelector("#text-overlay");
     let mouseover = false;
 
     const cacheDimensions = () => {
       // const iconWidth = (Math.min(buttonHeight, buttonWidth) * (iconSize / 100)) * 0.84;
       // const iconHeight = Math.round(buttonHeight < buttonWidth ? iconSize * 0.7 * 0.01 * buttonHeight : buttonWidth * (iconSize / 100) * 0.7);
+      if (
+        !icon ||
+        !textOverlay ||
+        icon.offsetWidth === 0 ||
+        icon.offsetHeight === 0 ||
+        textOverlay.offsetWidth === 0 ||
+        textOverlay.offsetHeight === 0
+      ) {
+        setTimeout(() => cacheDimensions(), 100);
+        return;
+      }
+
       const iconWidth = icon.offsetWidth;
       const iconHeight = icon.offsetHeight;
       const textWidth = textOverlay.offsetWidth;
       const textHeight = textOverlay.offsetHeight;
 
-      console.log(iconWidth, textWidth, iconHeight, textHeight);
+      // console.log(iconWidth, textWidth, iconHeight, textHeight);
 
       const totalWidth = iconWidth + textWidth + fs.spaceBetween;
       const totalHeight = iconHeight + textHeight + fs.spaceBetween;
@@ -117,7 +149,7 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
       setHoverState(true);
       textOverlay.style.opacity = "1";
 
-      cacheDimensions();
+
       if (fs.horizontalAnim) {
         icon.style.transform = `translate(-${preCalculatedNum1}px, -50%)`;
         textOverlay.style.transform = `translate(${preCalculatedNum2}px, -50%)`;
@@ -128,6 +160,7 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
 
       icon.style.color = fs.iconHoverColor;
       container.style.border = fs.hoverBorder;
+      container.style.boxShadow = fs.hoverShadow;
     };
 
     const handleMouseOut = () => {
@@ -143,6 +176,7 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
 
       icon.style.color = fs.iconColor;
       container.style.border = fs.border;
+      container.style.boxShadow = fs.shadow;
     };
 
     const handleMouseDown = () => {
@@ -151,6 +185,7 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
       container.style.backgroundColor = fs.activeColor;
       textOverlay.style.color = fs.textActiveColor;
       container.style.border = fs.activeBorder;
+      container.style.boxShadow = fs.activeShadow;
     };
 
     const handleMouseUp = () => {
@@ -159,9 +194,13 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
       container.style.backgroundColor = fs.hoverColor;
       textOverlay.style.color = fs.textColor;
       container.style.border = fs.hoverBorder;
+      container.style.boxShadow = fs.hoverShadow;
     };
 
     const handleClick = (event) => {
+      if (fs.link) {
+        window.open(fs.link, "_blank"); // Open link in a new tab
+      }
       if (onAction) {
         onAction(event);
       }
@@ -174,6 +213,7 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
     container.addEventListener("click", handleClick);
 
     handleMouseOut()
+    cacheDimensions();
 
     return () => {
       container.removeEventListener("mouseover", handleMouseOver);
@@ -186,9 +226,10 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
 
   const containerStyle = {
     position: "relative",
-    width: `${fs.buttonWidth}px`,
-    height: `${fs.buttonHeight}px`,
+    width: `${fs.width}px`,
+    height: `${fs.height}px`,
     border: `${fs.border}`,
+    shadow: `${fs.shadow}`,
     borderRadius: `${fs.borderRadius}`,
     backgroundColor: activeState
       ? fs.activeColor
