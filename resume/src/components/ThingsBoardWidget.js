@@ -17,7 +17,7 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
     iconSize: 100,
     iconBorder: "none",
     iconBorderRadius: "10px",
-    width: 200,
+    width: 250,
     height: 70,
     color: "black",
     selectedIcon: "mdi:home",
