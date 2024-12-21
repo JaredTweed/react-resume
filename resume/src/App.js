@@ -4,6 +4,7 @@ import '@mdi/font/css/materialdesignicons.min.css'; // Import Material Design Ic
 import "@fontsource/poppins"; // Defaults to weight 400
 import "@fontsource/poppins/700.css"; // Bold weight
 import handsIcon from "./assets/hands.png";
+import ttqbcIcon from "./assets/texttoquestion.png";
 import troublemakerIcon from "./assets/troublemaker.jpg";
 import tealBlackVideo from "./assets/teal-black.mp4"; // Import the video file
 
@@ -22,6 +23,12 @@ const App = () => {
     selectedIcon: troublemakerIcon,
     text: "Troublemaker<br>Reporter",
     link: "https://jaredtweed.github.io/TroublemakerReporter/",
+  };
+
+  const ttqbcButton = {
+    selectedIcon: ttqbcIcon,
+    text: "Text To Question<br>Bank Converter",
+    link: "https://jaredtweed.github.io/TextToQuestionBankOnline/",
   };
 
   const resumeButton = {
@@ -122,6 +129,7 @@ const App = () => {
       <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px" }}>
         <ThingsBoardWidget settings={handsButton} />
         <ThingsBoardWidget settings={troublemakerButton} />
+        <ThingsBoardWidget settings={ttqbcButton} />
       </div>
 
       <style>
