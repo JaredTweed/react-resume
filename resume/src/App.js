@@ -26,14 +26,14 @@ const App = () => {
 
   const resumeButton = {
     selectedIcon: "mdi:download",
-    iconSize: 70,
+    iconSize: 60,
+    fontSize: "25px",
     height: 50,
     width: 200,
     color: "#007070",
     text: "Resume",
     link: "https://raw.githubusercontent.com/JaredTweed/jaredtweed/main/JaredTweed-Resume.pdf",
   };
-
 
   const handleAction = (event) => {
     console.log("Widget clicked!");
@@ -46,12 +46,12 @@ const App = () => {
     }
 
     if (video && !showResume && video.duration - video.currentTime <= 0) {
-      setShowResume(true); // Trigger fade-in 1 seconds before the video ends
+      setShowResume(true); // Trigger fade-in when the video ends
     }
   };
 
   return (
-    <div style={{ fontFamily: "Poppins, sans-serif", marginTop: "10px", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", height: "100vh", position: "relative" }}>
+    <div style={{ fontFamily: "Poppins, sans-serif", marginTop: "10px", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", position: "relative" }}>
       {/* Video Container */}
       <div style={{ position: "relative", maxWidth: "90%", height: "auto" }}>
         {/* Video Element */}
@@ -75,34 +75,45 @@ const App = () => {
           <div
             style={{
               position: "absolute",
-              top: "50%",
+              top: showResume ? "calc(50% - 30px)" : "50%", // Adjust position based on resume visibility
               left: "50%",
               transform: "translate(-50%, -50%)",
               color: "#fff",
               fontWeight: 700,
               fontFamily: "Poppins, sans-serif",
               fontSize: "24px",
+              width: "100%",
               textAlign: "center",
               opacity: 0,
               animation: "fadeIn 2s forwards",
+              transition: "top 1s ease", // Smooth transition for the top position
             }}
           >
             Jared Tweed<br />Full-Stack Developer
+
           </div>
         )}
 
         {/* Resume Button */}
         {showResume && (
-          <div style={{
-            position: "absolute",
-            top: "70%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
+          <div
+            style={{
+              position: "absolute",
+              top: "calc(50% + 40px)",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
 
-            color: "#fff",
-            opacity: 0,
-            animation: "fadeIn 2s forwards",
-          }}><ThingsBoardWidget settings={resumeButton} /></div>
+
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              transition: "top 1s ease",
+              opacity: 0,
+              animation: "fadeIn 2s forwards",
+            }}
+          >
+            <ThingsBoardWidget settings={resumeButton} />
+          </div>
         )}
 
       </div>
@@ -112,7 +123,6 @@ const App = () => {
         <ThingsBoardWidget settings={handsButton} />
         <ThingsBoardWidget settings={troublemakerButton} />
       </div>
-
 
       <style>
         {`
@@ -126,7 +136,7 @@ const App = () => {
           }
         `}
       </style>
-    </div >
+    </div>
   );
 };
 
