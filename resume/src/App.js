@@ -7,6 +7,7 @@ import handsIcon from "./assets/hands.png";
 import ttqbcIcon from "./assets/texttoquestion.png";
 import troublemakerIcon from "./assets/troublemaker.jpg";
 import tealBlackVideo from "./assets/teal-black.mp4"; // Import the video file
+import background from "./assets/texture1.jpg";
 
 const App = () => {
   const [showText, setShowText] = useState(false);
@@ -29,6 +30,12 @@ const App = () => {
     selectedIcon: ttqbcIcon,
     text: "Text To Question<br>Bank Converter",
     link: "https://jaredtweed.github.io/TextToQuestionBankOnline/",
+  };
+
+  const bookingsButton = {
+    selectedIcon: "home",
+    text: "Appointment<br>Booker",
+    link: "https://jaredtweed.github.io/tetrisbooking/",
   };
 
   const resumeButton = {
@@ -58,9 +65,15 @@ const App = () => {
   };
 
   return (
-    <div style={{ fontFamily: "Poppins, sans-serif", marginTop: "10px", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", position: "relative" }}>
+    <div style={{
+      // backgroundImage: `linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 90%, rgba(255, 255, 255, 1) 100%), url(${background})`,
+      // backgroundSize: "cover",
+      height: "100vh",
+      padding: "10px",
+      fontFamily: "Poppins, sans-serif", margin: "10px", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", position: "relative"
+    }}>
       {/* Video Container */}
-      <div style={{ position: "relative", maxWidth: "90%", height: "auto" }}>
+      <div style={{ position: "relative", height: "auto" }}>
         {/* Video Element */}
         <video
           ref={videoRef}
@@ -70,6 +83,7 @@ const App = () => {
           onTimeUpdate={handleTimeUpdate}
           style={{
             width: "100%",
+            maxWidth: "770px",
             height: "auto",
             borderRadius: "20px",
             display: "block",
@@ -126,11 +140,14 @@ const App = () => {
       </div>
 
       <h1>Projects</h1>
-      <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "10px" }}>
+      <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "10px" }}>
         <ThingsBoardWidget settings={handsButton} />
         <ThingsBoardWidget settings={troublemakerButton} />
         <ThingsBoardWidget settings={ttqbcButton} />
+        <ThingsBoardWidget settings={bookingsButton} />
       </div>
+
+      <h1>Work Experience</h1>
 
       <style>
         {`
