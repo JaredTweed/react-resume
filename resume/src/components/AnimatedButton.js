@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-const ThingsBoardWidget = ({ settings, onAction }) => {
+const AnimatedButton = ({ settings, onAction }) => {
   const containerRef = useRef(null);
   const [uniqueId] = useState(uuidv4());
   const [hoverState, setHoverState] = useState(false);
@@ -244,4 +244,4 @@ const ThingsBoardWidget = ({ settings, onAction }) => {
   return <div id={`container_${uniqueId}`} ref={containerRef} style={containerStyle}></div>;
 };
 
-export default ThingsBoardWidget;
+export default AnimatedButton;
