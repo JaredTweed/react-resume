@@ -69,6 +69,17 @@ const App = () => {
           isBarGraph: false,
           showMin: true,
           showMax: true,
+          markAreas: [
+            {
+              markAreaMax: 23,  // End of the mark area
+              markAreaColor: 'g' // 'g' for green (as per your logic)
+            },
+            {
+              markAreaMin: 23.5,
+              markAreaMax: 24,
+              markAreaColor: 'r' // 'r' for red
+            }
+          ]
           // ...
         }
       }
@@ -115,7 +126,7 @@ const App = () => {
     showAvg: false,
     showSum: false,
     syncTooltips: true,
-    setLineColor: false,
+    setLineColor: true,
     lineColor: '#000000',
     overrideColorForIndex: []
   };
