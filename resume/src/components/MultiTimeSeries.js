@@ -234,22 +234,34 @@ export default function MultiTimeSeries({
     // ---------------
     // 2.2) For each "valueBox", compute HTML content and measure width
     // ---------------
+    const showAllData = computeShowAllData(dataKeys, settings);
+
     const legendWidths = [];
+    const tempContainer = document.createElement('div');
+    tempContainer.style.position = 'absolute';
+    tempContainer.style.visibility = 'hidden';
+    tempContainer.style.whiteSpace = 'nowrap';
+    document.body.appendChild(tempContainer);
     dataKeys.forEach((dk, i) => {
       const valueBoxEl = document.getElementById(`valueBox_${i}_${uniqueId}`);
       if (!valueBoxEl) return;
 
-      const html = buildValueBoxHTML(dk, newChartDataList[i], settings);
+      // Generate content and append to tempContainer
+      const html = buildValueBoxHTML(dk, chartDataList[i], settings);
+      tempContainer.innerHTML = html;
       valueBoxEl.innerHTML = html;
 
-      // measure width
-      legendWidths[i] = valueBoxEl.scrollWidth;
+      // Measure natural width
+      legendWidths[i] = tempContainer.offsetWidth;
+      // legendWidths[i] = valueBoxEl.scrollWidth;
     });
+    document.body.removeChild(tempContainer); // Cleanup temporary container
     const newMaxWidth = legendWidths.length
       ? Math.max(...legendWidths)
       : maxLegendWidth;
     if (newMaxWidth !== maxLegendWidth) {
       setMaxLegendWidth(newMaxWidth);
+      console.log(legendWidths);
     }
 
     // ---------------
@@ -444,10 +456,11 @@ export default function MultiTimeSeries({
             textAlign: 'center',
             fontSize: '12px',
             fontWeight: 'bold',
-            marginTop: `${4 - additionalHeight - spaceBetweenCharts}px`,
+            marginTop: `${5 - additionalHeight}px`,
             marginBottom: '0px',
             border: '1px solid #000',
-            borderRadius: '8px'
+            borderRadius: '8px',
+            color: 'black'
           }}
         >
           Latest
@@ -481,9 +494,8 @@ function computeShowAllData(dataKeys, settings) {
  * In the original code, you used showAllData to decide 
  * if you only show the "Latest" or show min/max/avg/sum, etc. 
  */
-function buildValueBoxHTML(dk, keyData, settings) {
+function buildValueBoxHTML(dk, keyData, settings, showAll) {
   const dataKey = dk.dataKey;
-  const showAll = computeShowAllData([dk], settings); // or compute once in parent
   const label = dataKey.label || 'No Title';
   const decimals = dataKeyDecimals(dataKey);
   const units = dataKeyUnits(dataKey);

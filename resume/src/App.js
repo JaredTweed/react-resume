@@ -93,7 +93,7 @@ const App = () => {
         settings: {
           // isBarGraph: true,
           showMin: false,
-          showMax: true,
+          // showMax: true,
           // ...
         }
       }
@@ -136,8 +136,7 @@ const App = () => {
     // showAvg: false,
     // showSum: false,
     syncTooltips: true,
-    lineColor: '#009900',
-    overrideColorForIndex: []
+    lineColor: '#009900'
   };
 
   // Time range
