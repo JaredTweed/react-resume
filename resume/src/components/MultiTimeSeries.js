@@ -188,10 +188,11 @@ export default function MultiTimeSeries({
         },
         tooltip: {
           trigger: 'axis',
+          triggerOn: 'mousemove|click',
           backgroundColor: 'rgba(0,0,0,0.8)',
           borderWidth: 0,
           padding: 5,
-          textStyle: { color: '#fff', fontSize: tooltipFontSize },
+          textStyle: { color: '#fff', fontSize: tooltipFontSize, align: 'left' },
           position: function (pos, params, dom, rect, size) {
             // Custom position logic to nudge tooltip left or right
             const indexPos =
@@ -228,6 +229,8 @@ export default function MultiTimeSeries({
       };
 
       chartInstance.setOption(chartOption);
+      updateXAxisSplitNumber();
+      chartInstance.resize();
     });
 
     // ---------------
@@ -266,9 +269,6 @@ export default function MultiTimeSeries({
         const chartInstance = chartRefObj.chartInstance;
         if (!chartInstance) return;
         const dataKeyObj = dataKeys[i];
-
-        // Clear old listener (if any)
-        chartInstance.getZr()?.off?.('mousemove');
 
         chartInstance.myMouseLocation = '';
         chartInstance.getZr()?.on?.('mousemove', function (params) {
@@ -312,6 +312,7 @@ export default function MultiTimeSeries({
           refObj.chartInstance.resize();
         }
       });
+      updateXAxisSplitNumber();
     }
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -342,6 +343,26 @@ export default function MultiTimeSeries({
   // ---------------------------------
   const showAllData = computeShowAllData(dataKeys, settings);
 
+  function updateXAxisSplitNumber() {
+    chartRefs.current.forEach((refObj) => {
+      const chartInstance = refObj.chartInstance;
+      if (!chartInstance) return;
+
+      // Get the width of the chart container
+      const chartWidth = chartInstance.getDom()?.clientWidth || 0;
+
+      // Calculate splitNumber based on chart width
+      const splitNumber = Math.max(Math.floor(chartWidth / 120), 2); // Adjust 120 as needed for your layout
+
+      // Update the chart options with the new splitNumber
+      chartInstance.setOption({
+        xAxis: {
+          splitNumber: splitNumber,
+        },
+      });
+    });
+  }
+
   return (
     <div
       id={uniqueId}
@@ -351,7 +372,10 @@ export default function MultiTimeSeries({
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        backgroundColor: "white",
+        padding: "10px",
+        borderRadius: "15px"
       }}
     >
       {dataKeys.map((dk, i) => {
@@ -378,6 +402,9 @@ export default function MultiTimeSeries({
               id={`valueBox_${i}_${uniqueId}`}
               style={{
                 width: `${maxLegendWidth}px`,
+                height: isLast
+                  ? `calc(100% - ${additionalHeight}px)`
+                  : "100%",
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -385,6 +412,7 @@ export default function MultiTimeSeries({
                 verticalAlign: 'middle',
                 border: '1px solid #000',
                 borderRadius: '8px',
+                color: "black",
                 fontSize: '14px',
                 fontWeight: 'bold',
                 marginBottom: '0px',
@@ -571,6 +599,7 @@ function computeYAxisRange(dk, dataArr) {
 
   return [graphMin, graphMax];
 }
+
 
 /**
  * Using your MarkAreas logic from pushMarkAreasSeries. 

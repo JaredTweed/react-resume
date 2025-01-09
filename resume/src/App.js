@@ -14,8 +14,6 @@ import tealBlackVideo from "./assets/teal-black.mp4"; // Import the video file
 import background from "./assets/texture1.jpg";
 
 
-const UNSPLASH_API_URL = "https://source.unsplash.com/random/770x500";
-
 const App = () => {
   const [showText, setShowText] = useState(false);
   const [showResume, setShowResume] = useState(false);
@@ -83,7 +81,7 @@ const App = () => {
         decimals: 0,
         settings: {
           isBarGraph: false,
-          showMin: true,
+          showMin: false,
           showMax: true,
           // ...
         }
