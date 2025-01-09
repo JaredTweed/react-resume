@@ -37,9 +37,7 @@ import { v4 as uuidv4 } from 'uuid';
  *                                                 showAvg: false,
  *                                                 showSum: false,
  *                                                 syncTooltips: true,
- *                                                 setLineColor: false,
- *                                                 lineColor: '#000000',
- *                                                 overrideColorForIndex: [{ index: 1, color: 'red' }, ...]
+ *                                                 lineColor: '#000000'
  *                                               }
  * @param {number} props.minTime              - The minimum timestamp (ms) from your time window.
  * @param {number} props.maxTime              - The maximum timestamp (ms) from your time window.
@@ -486,7 +484,7 @@ function computeShowAllData(dataKeys, settings) {
 function buildValueBoxHTML(dk, keyData, settings) {
   const dataKey = dk.dataKey;
   const showAll = computeShowAllData([dk], settings); // or compute once in parent
-  const label = dataKey.label;
+  const label = dataKey.label || 'No Title';
   const decimals = dataKeyDecimals(dataKey);
   const units = dataKeyUnits(dataKey);
 
@@ -561,22 +559,10 @@ function buildValueBoxHTML(dk, keyData, settings) {
 }
 
 /** 
- * Finds color overrides if 'setLineColor' is true or user specified
- * an override for a particular index.
+ * Picks thr line color from the dataKey, falls back to the settings.lineColor, defaults to black.
  */
 function pickLineColor(index, dataKey, settings) {
-  let defaultColor = dataKey?.color || dataKey.dataKey?.color || '#3398DB';
-  // If user wants all lines identical
-  if (settings.setLineColor && settings.lineColor) {
-    defaultColor = settings.lineColor;
-  }
-  // Then override any specific index
-  if (settings.overrideColorForIndex && Array.isArray(settings.overrideColorForIndex)) {
-    const override = settings.overrideColorForIndex.find((o) => o.index === index);
-    if (override) {
-      defaultColor = override.color;
-    }
-  }
+  let defaultColor = dataKey?.color || dataKey.dataKey?.color || settings.lineColor || '#000000';
   return defaultColor;
 }
 
@@ -608,14 +594,21 @@ function computeYAxisRange(dk, dataArr) {
  */
 function pushMarkAreasSeries(dk, allData, allDataKeys) {
   const dataKey = dk.dataKey;
-  const baseLabel = dataKey.label.replace(/-(g|y|p|r)-(min|max)$/, '');
-  // We only do mark areas if the dataKey is NOT itself a "min/max" 
-  if (dataKey.label.match(/-(g|y|p|r)-(min|max)$/)) {
-    // console.log(`Skipping markArea for key: ${dataKey.label}`);
+
+  // Check if dataKey or dataKey.label is undefined/null
+  if (!dataKey || !dataKey.label) {
+    console.warn("Missing dataKey or dataKey.label:", dataKey);
     return [];
   }
 
-  // color map
+  const baseLabel = dataKey.label.replace(/-(g|y|p|r)-(min|max)$/, '');
+
+  // Check if this dataKey is a "min/max" key
+  if (dataKey.label.match(/-(g|y|p|r)-(min|max)$/)) {
+    return [];
+  }
+
+  // Define the color map
   const colorMap = {
     g: 'rgba(0, 150, 0, 0.30)',
     y: 'rgba(255, 255, 0, 0.30)',
@@ -623,48 +616,46 @@ function pushMarkAreasSeries(dk, allData, allDataKeys) {
     r: 'rgba(255, 0, 0, 0.30)'
   };
 
-  // We'll gather [ [ {yAxis, itemStyle}, {yAxis} ], ... ]
   const markAreaKeysData = [];
-  // For each "mark area" dataKey that has label "something-g-min" or "something-g-max"
-  // we find the matching opposite, etc.
-  // Because in original code, you do `self.markAreaDataKeys` but we can do a filter on allDataKeys
-  const markAreaDataKeys = allDataKeys.filter((k) =>
-    k.dataKey?.label.match(/-(g|y|p|r)-(min|max)$/)
+
+  // Filter valid markAreaDataKeys
+  const markAreaDataKeys = allDataKeys.filter(
+    (k) => k.dataKey?.label?.match(/-(g|y|p|r)-(min|max)$/)
   );
 
   markAreaDataKeys.forEach((mk) => {
     const mkLabel = mk.dataKey.label;
     const colorMatch = mkLabel.match(/^(.+)-(\d+)-(g|y|p|r)-(min|max)$/);
     if (!colorMatch) return;
-    const [_, label, seed, colorChar, type] = colorMatch;
-    if (label !== baseLabel) return; // means it's a different base label
 
-    // find opposite type
+    const [_, label, seed, colorChar, type] = colorMatch;
+    if (label !== baseLabel) return;
+
     const oppositeType = type === 'min' ? 'max' : 'min';
     const oppositeKey = `${baseLabel}-${seed}-${colorChar}-${oppositeType}`;
 
-    // find the data for current + opposite
+    // Find indices for current and opposite keys
     const currentDataKeyIndex = allDataKeys.findIndex(
-      (x) => x.dataKey.label === mkLabel
+      (x) => x.dataKey?.label === mkLabel
     );
     const oppositeIndex = allDataKeys.findIndex(
-      (x) => x.dataKey.label === oppositeKey
+      (x) => x.dataKey?.label === oppositeKey
     );
 
-    // The actual numeric value (the last data point)
     let cVal = null;
-    if (allData[currentDataKeyIndex] && allData[currentDataKeyIndex].length) {
+    if (currentDataKeyIndex >= 0 && allData[currentDataKeyIndex]?.length) {
       const arr = allData[currentDataKeyIndex];
       cVal = arr[arr.length - 1][1];
     }
 
     let oVal = null;
-    if (oppositeIndex >= 0 && allData[oppositeIndex] && allData[oppositeIndex].length) {
+    if (oppositeIndex >= 0 && allData[oppositeIndex]?.length) {
       const arr2 = allData[oppositeIndex];
       oVal = arr2[arr2.length - 1][1];
     }
 
     if (cVal == null) return;
+
     const minValue = type === 'min' ? cVal : oVal !== null ? oVal : -Infinity;
     const maxValue = type === 'max' ? cVal : oVal !== null ? oVal : Infinity;
 
@@ -683,10 +674,9 @@ function pushMarkAreasSeries(dk, allData, allDataKeys) {
     }
   });
 
-  // Also include any custom markAreas from dataKey.settings.markAreas
   const customMarkAreas = dataKey.settings?.markAreas || [];
   const markAreaSettingsData = customMarkAreas.map((marker) => {
-    const c = marker.markAreaColor?.[0]; // first letter
+    const c = marker.markAreaColor?.[0];
     const cKey = colorMap[c?.toLowerCase?.()] || 'rgba(0,0,0,0.1)';
     return [
       {
@@ -719,6 +709,7 @@ function pushMarkAreasSeries(dk, allData, allDataKeys) {
     }
   ];
 }
+
 
 /** 
  * Format an X-axis label depending on time range.

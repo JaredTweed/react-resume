@@ -62,13 +62,13 @@ const App = () => {
     {
       dataKey: {
         label: 'Temperature',
-        color: 'red',
+        // color: 'red',
         units: '°C',
         decimals: 1,
         settings: {
           isBarGraph: false,
-          showMin: true,
-          showMax: true,
+          // showMin: true,
+          // showMax: true,
           markAreas: [
             {
               markAreaMax: 23,  // End of the mark area
@@ -87,11 +87,11 @@ const App = () => {
     {
       dataKey: {
         label: 'Humidity',
-        color: 'blue',
+        // color: 'blue',
         units: '%',
         decimals: 0,
         settings: {
-          isBarGraph: false,
+          // isBarGraph: true,
           showMin: false,
           showMax: true,
           // ...
@@ -105,34 +105,43 @@ const App = () => {
   // Each sub-array is [[timestamp, value], [timestamp, value], ...].
   const data = [
     [
+      [Date.now() - 40000, 22.3],
+      [Date.now() - 35000, 22.7],
       [Date.now() - 30000, 22.5],
+      [Date.now() - 25000, 22.6],
       [Date.now() - 20000, 23.1],
-      [Date.now() - 10000, 22.9],
-      [Date.now(), 24.0]
+      [Date.now() - 15000, 23.0],
+      [Date.now() - 10000, 22.1],
+      [Date.now() - 5000, 23.5],
+      [Date.now(), 24.0],
     ],
     [
+      [Date.now() - 40000, 39],
+      [Date.now() - 35000, 41],
       [Date.now() - 30000, 40],
+      [Date.now() - 25000, 43],
       [Date.now() - 20000, 45],
+      [Date.now() - 15000, 44],
       [Date.now() - 10000, 42],
-      [Date.now(), 43]
-    ]
+      [Date.now() - 5000, 43.5],
+      [Date.now(), 43],
+    ],
   ];
 
   // Settings (similar to your original ThingsBoard widget settings)
   const settings = {
     showMouseHeight: true,
-    showMin: false,
-    showMax: false,
-    showAvg: false,
-    showSum: false,
+    // showMin: false,
+    // showMax: false,
+    // showAvg: false,
+    // showSum: false,
     syncTooltips: true,
-    setLineColor: true,
-    lineColor: '#000000',
+    lineColor: '#009900',
     overrideColorForIndex: []
   };
 
   // Time range
-  const minTime = Date.now() - 30000;  // 30 sec ago
+  const minTime = Date.now() - 40000;  // 40 sec ago
   const maxTime = Date.now();         // now
 
 
