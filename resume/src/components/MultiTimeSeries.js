@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import * as echarts from 'echarts';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -23,7 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
  *                                                     showMax: false,
  *                                                     showAvg: false,
  *                                                     showSum: false,
- *                                                     yAxisMin: 0,
+ *                                                     yAxisMin: 0, // This is the min which will be expanded if the data excedes it
  *                                                     yAxisMax: 0,
  *                                                     markAreas: [ ... ]
  *                                                   }
@@ -57,8 +57,12 @@ export default function MultiTimeSeries({
   const containerRef = useRef(null);   // The main big container (equivalent to self.ctx.$container)
   const [maxLegendWidth, setMaxLegendWidth] = useState(70); // Default left box width
   const [chartDataList, setChartDataList] = useState([]);   // Storing arrays-of-arrays data for each chart
-  const spaceBetweenCharts = 10;
+  const spaceBetweenCharts = 7;
   const additionalHeight = 20;         // Space for x-axis on last chart
+
+  const showAllData = useMemo(() => {
+    return computeShowAllData(dataKeys, settings);
+  }, [dataKeys, settings]);
 
   // ---------------------------------
   // 1) On first render, create the DOM structure for each chart
@@ -132,7 +136,7 @@ export default function MultiTimeSeries({
         lineStyle: {
           width: 1.5,
           color: lineColor,
-          shadowColor: 'rgba(0, 0, 0, 0.35)',
+          shadowColor: 'rgba(0, 0, 0, 0.55)',
           shadowBlur: 10,
           shadowOffsetY: 2
         },
@@ -231,11 +235,12 @@ export default function MultiTimeSeries({
       chartInstance.resize();
     });
 
+
+
+
     // ---------------
     // 2.2) For each "valueBox", compute HTML content and measure width
     // ---------------
-    const showAllData = computeShowAllData(dataKeys, settings);
-
     const legendWidths = [];
     const tempContainer = document.createElement('div');
     tempContainer.style.position = 'absolute';
@@ -247,7 +252,7 @@ export default function MultiTimeSeries({
       if (!valueBoxEl) return;
 
       // Generate content and append to tempContainer
-      const html = buildValueBoxHTML(dk, chartDataList[i], settings);
+      const html = buildValueBoxHTML(dk, chartDataList[i], settings, showAllData);
       tempContainer.innerHTML = html;
       valueBoxEl.innerHTML = html;
 
@@ -274,7 +279,7 @@ export default function MultiTimeSeries({
     // ---------------
     // 2.4) If showMouseHeight is true, set up mousemove
     // ---------------
-    if (settings.showMouseHeight) {
+    if (settings.showMouseHeight || settings.showMouseHeight == undefined || settings.showMouseHeight == null) {
       chartRefs.current.forEach((chartRefObj, i) => {
         const chartInstance = chartRefObj.chartInstance;
         if (!chartInstance) return;
@@ -351,7 +356,7 @@ export default function MultiTimeSeries({
   //       </div>
   //    If you do NOT show all data, we optionally add a "Latest" box at the bottom
   // ---------------------------------
-  const showAllData = computeShowAllData(dataKeys, settings);
+  // const showAllData = computeShowAllData(dataKeys, settings);
 
   function updateXAxisSplitNumber() {
     chartRefs.current.forEach((refObj) => {
@@ -373,19 +378,22 @@ export default function MultiTimeSeries({
     });
   }
 
+  const lrtpadding = 10;
+  const bpadding = 6;
+
   return (
     <div
       id={uniqueId}
       ref={containerRef}
       style={{
-        width: '100%',
-        height: '100%',
-        display: 'flex',
+        width: `calc(100% - ${2 * lrtpadding}px)`,
+        height: `calc(100% - ${lrtpadding + bpadding}px)`, display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         backgroundColor: "white",
-        padding: "10px",
-        borderRadius: "15px"
+        padding: `${lrtpadding}px ${lrtpadding}px ${bpadding}px ${lrtpadding}px`,
+        borderRadius: "15px",
+        boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)"
       }}
     >
       {dataKeys.map((dk, i) => {
@@ -398,6 +406,7 @@ export default function MultiTimeSeries({
           <div
             key={i}
             style={{
+              position: 'relative',
               width: '100%',
               height: isLast
                 ? `calc(${heightCalc} + ${additionalHeight}px)`
@@ -413,8 +422,8 @@ export default function MultiTimeSeries({
               style={{
                 width: `${maxLegendWidth}px`,
                 height: isLast
-                  ? `calc(100% - ${additionalHeight}px)`
-                  : "100%",
+                  ? `calc(100% - ${additionalHeight + 1}px)`
+                  : "calc(100% - 1px)",
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -434,7 +443,7 @@ export default function MultiTimeSeries({
               id={`chart_${i}_${uniqueId}`}
               style={{
                 width: `calc(100% - ${maxLegendWidth}px)`,
-                height: '100%'
+                height: `100%`
               }}
               ref={(el) => {
                 // Keep track of the DOM ref for ECharts
@@ -453,10 +462,15 @@ export default function MultiTimeSeries({
         <div
           style={{
             width: `${maxLegendWidth}px`,
+            height: `${additionalHeight - 7}px`,
+            display: 'flex', // Enable flexbox layout
+            alignItems: 'center', // Vertically center content
+            justifyContent: 'center', // Horizontally center content
             textAlign: 'center',
             fontSize: '12px',
+            padding: '1px 0 0 0',
             fontWeight: 'bold',
-            marginTop: `${5 - additionalHeight}px`,
+            marginTop: `${3 - additionalHeight}px`,
             marginBottom: '0px',
             border: '1px solid #000',
             borderRadius: '8px',
@@ -480,12 +494,14 @@ export default function MultiTimeSeries({
  */
 function computeShowAllData(dataKeys, settings) {
   let showAll = settings.showMin || settings.showMax || settings.showAvg || settings.showSum;
-  dataKeys.forEach((dk) => {
-    const s = dk.dataKey.settings || {};
-    if (s.showMin || s.showMax || s.showAvg || s.showSum) {
-      showAll = true;
-    }
-  });
+  if (dataKeys.length > 0) {
+    dataKeys.forEach((dk) => {
+      const s = dk.dataKey.settings || {};
+      if (s.showMin || s.showMax || s.showAvg || s.showSum) {
+        showAll = true;
+      }
+    });
+  } else { showAll = true; }
   return showAll;
 }
 
@@ -592,8 +608,8 @@ function computeYAxisRange(dk, dataArr) {
   const sMin = dataKey.settings?.yAxisMin;
   const sMax = dataKey.settings?.yAxisMax;
 
-  const graphMin = sMin != null ? Math.min(sMin, dataMin) : dataMin;
-  const graphMax = sMax != null ? Math.max(sMax, dataMax) : dataMax;
+  const graphMin = sMin != null ? Math.min(sMin, dataMin) : dataMin - ((dataMax - dataMin) * 0.03);
+  const graphMax = sMax != null ? Math.max(sMax, dataMax) : dataMax + ((dataMax - dataMin) * 0.03);
 
   return [graphMin, graphMax];
 }

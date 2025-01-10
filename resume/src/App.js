@@ -1,6 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AnimatedButton from "./components/AnimatedButton";
 import MultiTimeSeries from './components/MultiTimeSeries'
+import MultiTimeSeriesEditor from './components/MultiTimeSeriesEditor'
 
 import '@mdi/font/css/materialdesignicons.min.css'; // Import Material Design Icons CSS
 import "@fontsource/poppins"; // Defaults to weight 400
@@ -12,7 +13,6 @@ import troublemakerIcon from "./assets/troublemaker.jpg";
 import tetrisbookingIcon from "./assets/tetrisbooking.png";
 import tealBlackVideo from "./assets/teal-black.mp4"; // Import the video file
 import background from "./assets/texture1.jpg";
-
 
 const App = () => {
   const [showText, setShowText] = useState(false);
@@ -76,7 +76,7 @@ const App = () => {
             },
             {
               markAreaMin: 23.5,
-              markAreaMax: 24,
+              // markAreaMax: 24,
               markAreaColor: 'r' // 'r' for red
             }
           ]
@@ -87,12 +87,13 @@ const App = () => {
     {
       dataKey: {
         label: 'Humidity',
-        // color: 'blue',
+        color: 'blue',
         units: '%',
         decimals: 0,
         settings: {
           // isBarGraph: true,
           showMin: false,
+          yAxisMin: 42,
           // showMax: true,
           // ...
         }
@@ -103,45 +104,62 @@ const App = () => {
   // "data" is an array of arrays:
   // data[0] corresponds to dataKeys[0], data[1] to dataKeys[1], etc.
   // Each sub-array is [[timestamp, value], [timestamp, value], ...].
-  const data = [
+  const [data, setData] = useState([
     [
-      [Date.now() - 40000, 22.3],
-      [Date.now() - 35000, 22.7],
-      [Date.now() - 30000, 22.5],
-      [Date.now() - 25000, 22.6],
-      [Date.now() - 20000, 23.1],
-      [Date.now() - 15000, 23.0],
-      [Date.now() - 10000, 22.1],
-      [Date.now() - 5000, 23.5],
+      [Date.now() - 400000, 22.3],
+      [Date.now() - 350000, 22.7],
+      [Date.now() - 300000, 22.5],
+      [Date.now() - 250000, 22.6],
+      [Date.now() - 200000, 23.1],
+      [Date.now() - 150000, 23.0],
+      [Date.now() - 100000, 22.1],
+      [Date.now() - 50000, 23.5],
       [Date.now(), 24.0],
     ],
     [
-      [Date.now() - 40000, 39],
-      [Date.now() - 35000, 41],
-      [Date.now() - 30000, 40],
-      [Date.now() - 25000, 43],
-      [Date.now() - 20000, 45],
-      [Date.now() - 15000, 44],
-      [Date.now() - 10000, 42],
-      [Date.now() - 5000, 43.5],
+      [Date.now() - 400000, 39],
+      [Date.now() - 350000, 41],
+      [Date.now() - 300000, 40],
+      [Date.now() - 250000, 43],
+      [Date.now() - 200000, 45],
+      [Date.now() - 150000, 44],
+      [Date.now() - 100000, 42],
+      [Date.now() - 50000, 43.5],
       [Date.now(), 43],
     ],
-  ];
+  ]);
 
   // Settings (similar to your original ThingsBoard widget settings)
   const settings = {
-    showMouseHeight: true,
+    // showMouseHeight: false,
     // showMin: false,
     // showMax: false,
     // showAvg: false,
     // showSum: false,
     syncTooltips: true,
-    lineColor: '#009900'
+    lineColor: '#fff'
   };
 
   // Time range
-  const minTime = Date.now() - 40000;  // 40 sec ago
+  const minTime = Date.now() - 400000;  // 400 sec ago
   const maxTime = Date.now();         // now
+
+  // Live data simulation
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = Date.now();
+
+      // Generate new data points for each series
+      const newData = data.map((series) => {
+        const newPoint = [now, series[series.length - 1][1] + Math.random() - 0.5]; // Random variation
+        return [...series, newPoint];
+      });
+
+      setData(newData);
+    }, 5 * 1000); // Update every 5 second
+
+    return () => clearInterval(interval); // Cleanup on unmount
+  }, [data]);
 
 
   const handleTimeUpdate = () => {
@@ -179,9 +197,7 @@ const App = () => {
       <main>
 
         <div style={{
-          // backgroundImage: `linear-gradient(to top, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0) 90%, rgba(255, 255, 255, 1) 100%), url(${background})`,
-          // backgroundSize: "cover",
-          height: "100vh",
+          // height: "100vh",
           padding: "10px",
           fontFamily: "Poppins, sans-serif", margin: "10px", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", position: "relative"
         }}>
@@ -261,16 +277,23 @@ const App = () => {
           </div>
 
           <h1>Work Experience</h1>
-          <MultiTimeSeries
-            data={data}            // The multi-array of timeseries data
-            dataKeys={dataKeys}    // Metadata (labels, color, decimals, etc.)
-            settings={settings}    // Global widget configuration
-            minTime={minTime}      // Earliest timestamp
-            maxTime={maxTime}      // Latest timestamp
-          />
+          <div style={{
+            height: "400px", width: "100%", display: "flex", // Enables flexbox
+            justifyContent: "center", // Centers horizontally
+            alignItems: "center", // Centers vertically 
+          }}>
+            {/* < MultiTimeSeries
+              data={data}            // The multi-array of timeseries data
+              dataKeys={dataKeys}    // Metadata (labels, color, decimals, etc.)
+              settings={settings}    // Global widget configuration
+              minTime={minTime}      // Earliest timestamp
+              maxTime={maxTime}      // Latest timestamp
+            /> */}
+            <MultiTimeSeriesEditor />
+          </div>
 
         </div >
-      </main>
+      </main >
 
       <footer style={{ padding: "10px", backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
         <p>&copy; 2025 Jared Tweed. All Rights Reserved.</p>
