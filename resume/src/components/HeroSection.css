@@ -50,15 +50,23 @@
   color: black;
   /* background-color: white; */
   background: #e0e0e0;
-  box-shadow: -5px -5px 9px rgba(255, 255, 255, 0.45), 5px 5px 9px rgba(94, 104, 121, 0.3);
+  box-shadow:
+    -5px -5px 9px rgba(255, 255, 255, 0.87),
+    5px 5px 9px rgba(0, 0, 0, 0.3);
 
+  /* box-shadow: inset 0 -5px 5px 0 rgb(0, 0, 0, 0.13), inset 0 5px 5px 0 rgb(255, 255, 255, 1), inset 23px -33px 28px 0 rgb(255, 255, 255, 0.9), inset -25px 28px 23px 0 rgb(0, 0, 0, 0.1), 0 -15px 18px 0 rgb(255, 255, 255, 1), 0 25px 41px 0 rgb(0, 0, 0, 0.16); */
 
   border-radius: 5px;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .hero-resume-link:hover {
+  font-size: 1.1rem;
+  border-radius: 14px;
+}
+
+.hero-resume-link:active {
   /* background-color: #0056b3; */
   /* Same as original, just inset */
   box-shadow: inset -5px -5px 9px rgba(255, 255, 255, 0.45), inset 5px 5px 9px rgba(94, 104, 121, 0.3);

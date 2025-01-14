@@ -114,7 +114,29 @@ const App = () => {
           <div id="experience" style={{ scrollMarginTop: "100px" }}>
             <h2>Work Experience</h2>
 
-            <img src={peakhydro} style={{ maxWidth: "900px" }}></img>
+            {/* <img src={peakhydro} style={{ maxWidth: "900px" }}></img> */}
+
+            <div className="job-heading">
+              <h3>Full Stack Developer</h3>
+              <p><strong>Apr 2024 - Present</strong></p>
+              <p>Peak HydroMet Solutions</p>
+              <p>British Columbia, Canada</p>
+              <ul>
+                <li>
+                  <strong>Soft Skills:</strong> Engaged in in-person product improvement discussions with clients and worked as the sole developer for the business.
+                </li>
+                <li>
+                  <strong>Data Processing:</strong> Parsed JSON, XML, and CSV data using Python and utilized multithreading to optimize data curation speeds.
+                </li>
+                <li>
+                  <strong>Front End:</strong> Built custom widgets for ThingsBoard, implemented features using HTML, CSS, and JavaScript, optimized the ECharts.js charting library through multithreading, and provided UX design recommendations.
+                </li>
+                <li>
+                  <strong>Back End:</strong> Developed backend solutions using Node-RED, researched optimal APIs through documentation reviews, implemented email subscriptions using SendGrid and AWS Lambda/EC2, integrated MongoDB with Node.js, and worked with MQTT protocols.
+                </li>
+              </ul>
+            </div>
+
 
             <div style={{
               // height: "400px", 

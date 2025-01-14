@@ -3,3 +3,8 @@ h2 {
   font-size: 2rem;
   line-height: 1rem;
 }
+
+.job-heading {
+  text-align: left;
+  color: black;
+}
