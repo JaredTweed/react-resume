@@ -2,6 +2,10 @@ import React from "react";
 
 const Navbar = () => {
   return (
+
+
+
+
     <header
       style={{
         padding: "20px",
@@ -13,6 +17,44 @@ const Navbar = () => {
         boxShadow: "0px 5px 10px rgba(0,0,0,0.5)",
       }}
     >
+      {/* Grainy Effect Overlay */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 9999, // Ensure it stays above everything
+          pointerEvents: "none", // Allow interactions with underlying elements
+          opacity: 0.22, // Adjust intensity
+        }}
+      >
+        <svg style={{ width: "100%", height: "100%" }}>
+          <filter id="grainy" x="0" y="0" width="100%" height="100%">
+            <feTurbulence
+              type="turbulence"
+              baseFrequency="0.9" // Adjust frequency for desired grain size
+              numOctaves="18"
+            // seed="4"
+            // result="noise"
+            />
+            <feColorMatrix
+              type="saturate"
+              values="0" // Make it grayscale
+            />
+            <feBlend in="SourceGraphic" in2="noise" mode="multiply" />
+          </filter>
+          <rect
+            width="100%"
+            height="100%"
+            style={{ filter: "url(#grainy)" }}
+            fill="white"
+          />
+        </svg>
+      </div>
+
+
       {/* Gooey + Shadow Filter */}
       <svg style={{ position: "absolute", width: 0, height: 0 }}>
         <filter

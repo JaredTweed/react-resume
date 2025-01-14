@@ -1,0 +1,85 @@
+/* Hero Section */
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  /* Full viewport height */
+  background: #000;
+  /* Background color for contrast */
+  color: #fff;
+  /* White text color for contrast */
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  /* Ensures no overflow from image */
+}
+
+/* Background Image */
+.hero-section .hero-image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Ensures the image covers the entire container */
+  z-index: 1;
+  /* Place image behind content */
+}
+
+/* Overlay for Text Contrast */
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  /* Semi-transparent black overlay */
+  z-index: 2;
+  /* Place overlay above image but below text */
+}
+
+/* Hero Content */
+.hero-content {
+  position: relative;
+  z-index: 3;
+  /* Ensure text is on top of everything */
+  text-align: center;
+  /* Center-align text */
+  max-width: 800px;
+  padding: 20px;
+}
+
+/* Text Section */
+.hero-text h1 {
+  font-size: 4rem;
+  margin: 0 0 20px;
+  line-height: 1.2;
+}
+
+.hero-text h1 span {
+  color: #000000;
+  /* Accent color for title */
+}
+
+.hero-resume-link {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  z-index: 999999999;
+}
+
+.hero-resume-link:hover {
+  background-color: #0056b3;
+}

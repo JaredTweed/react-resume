@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
+import "./App.css";
+
 import AnimatedButton from "./components/AnimatedButton";
 import Navbar from "./components/Navbar";
+import HeroSection from "./components/HeroSection";
 import MultiTimeSeries from './components/MultiTimeSeries'
 import MultiTimeSeriesEditor from './components/MultiTimeSeriesEditor'
 
@@ -71,7 +74,8 @@ const App = () => {
   return (
     <div
       style={{
-        backgroundImage: `url(${background})`,
+        // backgroundImage: `url(${background})`,
+        backgroundColor: "#DAA06D",
         backgroundSize: "cover",
         backgroundAttachment: "fixed",
         fontFamily: "Poppins, sans-serif",
@@ -89,82 +93,15 @@ const App = () => {
 
         <div style={{
           // height: "100vh",
-          padding: "10px",
-          fontFamily: "Poppins, sans-serif", margin: "10px", display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", position: "relative"
+          // padding: "10px",
+          fontFamily: "Poppins, sans-serif",
+          // margin: "10px", 
+          display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", position: "relative"
         }}>
-          {/* Video Container */}
-          <div style={{ position: "relative", height: "auto" }}>
-            {/* Video Element */}
-            <video
-              ref={videoRef}
-              autoPlay
-              muted
-              playsInline
-              onTimeUpdate={handleTimeUpdate}
-              style={{
-                width: "100%",
-                maxWidth: "770px",
-                height: "auto",
-                borderRadius: "20px",
-                display: "block",
-              }}
-              src={tealBlackVideo}
-            />
 
-            {/* Text Element */}
-            {showText && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: showResume ? "calc(50% - 30px)" : "50%", // Adjust position based on resume visibility
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  color: "#fff",
-                  fontWeight: 700,
-                  fontFamily: "Poppins, sans-serif",
-                  fontSize: "24px",
-                  width: "100%",
-                  textAlign: "center",
-                  opacity: 0,
-                  animation: "fadeIn 2s forwards",
-                  transition: "top 1s ease", // Smooth transition for the top position
-                }}
-              >
-                Jared Tweed<br />Full-Stack Developer
-              </div>
-            )}
+          <HeroSection />
 
-            {/* Resume Button */}
-            {showResume && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: "calc(50% + 40px)",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-
-
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  transition: "top 1s ease",
-                  opacity: 0,
-                  animation: "fadeIn 2s forwards",
-                }}
-              >
-                <button style={{
-                  padding: "12px 20px", fontSize: "17px", fontFamily: "Poppins, san-serif",
-                  border: "none", cursor: "pointer",
-                  borderRadius: "10px", backgroundColor: "white",
-
-                  // backgroundImage: "radial-gradient(93% 87% at 87% 89%, rgba(0, 0, 0, 0.23) 0%, transparent 86.18%), radial-gradient(66% 66% at 26% 20%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%)"
-                }}>View Resume</button>
-              </div>
-            )}
-
-          </div>
-
-          <h1>Projects</h1>
+          <h2>Projects</h2>
           <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "10px" }}>
             <AnimatedButton settings={handsButton} />
             <AnimatedButton settings={bookingsButton} />
@@ -172,7 +109,7 @@ const App = () => {
             <AnimatedButton settings={troublemakerButton} />
           </div>
 
-          <h1>Work Experience</h1>
+          <h2>Work Experience</h2>
 
           <img src={peakhydro} style={{ maxWidth: "900px" }}></img>
 
@@ -196,12 +133,48 @@ const App = () => {
         </div >
       </main >
 
-      <footer style={{ padding: "10px", backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
+      {/* <footer style={{ padding: "10px", backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
         <p>&copy; 2025 Jared Tweed. All Rights Reserved.</p>
         <a href="mailto:jaredtwe@gmail.com" style={{ color: "white", textDecoration: "none" }}>
           Contact Me
         </a>
+      </footer> */}
+
+      <footer style={{ padding: "20px", backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white", textAlign: "center", fontSize: "14px" }}>
+        <p style={{ margin: "5px 0" }}>
+          <a
+            href="https://linkedin.com/in/jared-tweed"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "white", textDecoration: "underline", marginRight: "10px" }}
+          >
+            linkedin.com/in/jared-tweed
+          </a>
+          |
+          <a
+            href="https://github.com/JaredTweed"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "white", textDecoration: "underline", margin: "0 10px" }}
+          >
+            github.com/JaredTweed
+          </a>
+          |
+          <a
+            href="https://w.wiki/9JKw"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "white", textDecoration: "underline", marginLeft: "10px" }}
+          >
+            Wikipedia Contributions
+          </a>
+        </p>
+        <p style={{ margin: "5px 0" }}>
+          778-979-0126 | <a href="mailto:jaredtwe@gmail.com" style={{ color: "white", textDecoration: "underline" }}>jaredtwe@gmail.com</a>
+        </p>
+        <p style={{ margin: "15px 0 0" }}>&copy; 2025 Jared Tweed. All Rights Reserved.</p>
       </footer>
+
 
       <style>
         {`
