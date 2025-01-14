@@ -1,29 +1,50 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 
-// Import Google Fonts
-// import "https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap";
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <svg style={{ display: "none" }}>
-      <filter id="grainy">
-        <feTurbulence
-          type="turbulence"
-          baseFrequency={"0.65"}
-          stitchTiles={"stitch"}
+    {/* Grainy Effect Overlay */}
+    <div
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        zIndex: 9999, // Ensure it stays above everything
+        pointerEvents: "none", // Allow interactions with underlying elements
+        opacity: 0.26, // Adjust intensity
+      }}
+    >
+      <svg style={{ width: "100%", height: "100%" }}>
+        <filter id="grainy" x="0" y="0" width="100%" height="100%">
+          <feTurbulence
+            type="turbulence"
+            baseFrequency="0.9" // Adjust frequency for desired grain size
+            numOctaves="18"
+          // seed="4"
+          // result="noise"
+          />
+          <feColorMatrix
+            type="saturate"
+            values="0" // Make it grayscale
+          />
+          <feBlend in="SourceGraphic" in2="noise" mode="multiply" />
+        </filter>
+        <rect
+          width="100%"
+          height="100%"
+          style={{ filter: "url(#grainy)" }}
+          fill="white"
         />
-      </filter>
-    </svg>
+      </svg>
+    </div>
+
+    {/* Main App */}
     <App />
   </React.StrictMode>
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
