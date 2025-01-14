@@ -84,7 +84,7 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
 
       dataRef.current = newData;
       setData(newData);
-    }, 50000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [dataKeys]); // Add `dataKeys` as a dependency to reflect changes
@@ -120,8 +120,6 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
       // Exclude units that share a label with any existing dataKeys
       let remainingUnits = units.filter(unit => !dataKeys.some(dataKey => dataKey.dataKey.label === unit.label));
       if (remainingUnits.length > 0) { units = remainingUnits; }
-
-      console.log("hherjes", units);
 
       // Randomly select a unit
       const selectedUnit = units[Math.floor(Math.random() * units.length)];

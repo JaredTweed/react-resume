@@ -7,8 +7,6 @@ import React, {
 } from "react";
 import * as echarts from "echarts";
 import { v4 as uuidv4 } from "uuid";
-
-
 /**
  * MultiTimeSeries
  *
