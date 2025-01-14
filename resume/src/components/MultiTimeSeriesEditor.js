@@ -69,9 +69,16 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
     const interval = setInterval(() => {
       const now = Date.now();
 
-      const newData = dataRef.current.map((series) => {
+      const newData = dataRef.current.map((series, index) => {
+        const decimals = dataKeys[index]?.dataKey?.decimals ?? 2; // Default to 2 decimals if undefined
         const lastValue = series[series.length - 1][1];
-        const newPoint = [now, lastValue + Math.random() - 0.5];
+
+        // Determine fluctuation range
+        const fluctuation = decimals === 0
+          ? (Math.random() < 0.5 ? -(Math.random() * 2 + 1) : Math.random() * 2 + 1)   // Random number in [-3, -1], [1, 3]
+          : Math.random() - 0.5; // Default small fluctuation
+
+        const newPoint = [now, lastValue + fluctuation];
         return [...series, newPoint];
       });
 
@@ -80,7 +87,8 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [dataKeys]); // Add `dataKeys` as a dependency to reflect changes
+
 
   const addDataKey = () => {
     const newIndex = dataKeys.length + 1;
@@ -100,7 +108,7 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
         { shorthand: "mm", label: "Rainfall", initial: () => Math.random() * 20, decimals: 1 },
         { shorthand: "ppm", label: "CO2 Concentration", initial: () => 380 + Math.random() * 50, decimals: 1 },
         { shorthand: "L/min", label: "Water Flow Rate", initial: () => 10 + Math.random() * 20, decimals: 1 },
-        { shorthand: "°F", label: "Temperature (F)", initial: () => 60 + Math.random() * 30, decimals: 2 },
+        { shorthand: "°F", label: "Temperature", initial: () => 60 + Math.random() * 30, decimals: 2 },
         { shorthand: "lux", label: "Illuminance", initial: () => 100 + Math.random() * 900, decimals: 0 },
         { shorthand: "V", label: "Voltage", initial: () => 220 + Math.random() * 10, decimals: 2 },
         { shorthand: "A", label: "Current", initial: () => 5 + Math.random() * 5, decimals: 2 },
@@ -152,7 +160,7 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
         label: measurement.label,
         units: measurement.unit,
         decimals: measurement.decimals,
-        color: Math.random() < 0.5
+        color: Math.random() < 0.3
           ? `hsl(${Math.floor(Math.random() * 360)}, 100%, ${Math.floor(40 + Math.random() * 8)}%)`
           : null,
         settings: {
@@ -172,7 +180,7 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
     let initialDataValue = measurement.value;
     const newSeries = Array(20)
       .fill(null)
-      .map((_, i) => [Date.now() - (20 - i) * 20000, initialDataValue + Math.random() * 1.5]);
+      .map((_, i) => [Date.now() - (20 - i) * 20000, measurement.decimals === 0 ? initialDataValue + Math.random() * 6.5 : initialDataValue + Math.random() * 1.5]);
 
     setData((prev) => [...prev, newSeries]);
 
@@ -192,39 +200,51 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{
+      position: "relative",
+      // border: "1px solid black"
+    }}>
       <button
         onClick={addDataKey}
         style={{
-          backgroundColor: "green",
+          backgroundColor: "black",
+          // backgroundImage: "radial-gradient(93% 87% at 87% 89%, rgba(0, 0, 0, 0.23) 0%, transparent 86.18%), radial-gradient(66% 66% at 26% 20%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%)",
+          fontFamily: "Poppins, san-serif",
+          fontWeight: "bold",
+          border: 0,
           color: "white",
           border: "none",
-          borderRadius: "4px",
-          padding: "10px 20px",
+          borderRadius: "10px",
+          padding: "5px 10px",
           cursor: "pointer",
-          marginBottom: "20px",
+          width: "100px",
+          margin: "0 5px 5px 0"
         }}
       >
-        Add DataKey
+        +
       </button>
       <button
         onClick={removeDataKey}
         style={{
-          backgroundColor: "red",
+          backgroundColor: "black",
+          // backgroundImage: "radial-gradient(93% 87% at 87% 89%, rgba(0, 0, 0, 0.23) 0%, transparent 86.18%), radial-gradient(66% 66% at 26% 20%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%)",
+          fontFamily: "Poppins, san-serif",
+          fontWeight: "bold",
+          border: 0,
           color: "white",
           border: "none",
-          borderRadius: "4px",
-          padding: "10px 20px",
+          borderRadius: "10px",
+          padding: "5px 10px",
           cursor: "pointer",
-          marginBottom: "20px",
+          width: "100px"
         }}
       >
-        Remove DataKey
+        -
       </button>
       <div
         style={{
           height: "400px",
-          width: "600px",
+          minWidth: "600px",
           boxSizing: "border-box",
         }}
       >
@@ -236,8 +256,20 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
           maxTime={Date.now()}
         />
       </div>
-    </div>
+    </div >
   );
 };
 
 export default MultiTimeSeriesEditor;
+
+
+
+
+
+
+
+
+
+
+
+
