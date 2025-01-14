@@ -138,6 +138,9 @@ export default function MultiTimeSeries({
     const theMaxTime = maxTime !== undefined ? maxTime : globalMaxX;
 
     dataKeys.forEach((dk, i) => {
+      const { dataKey } = dk;
+      const lineColor = pickLineColor(i, dataKey, settings);
+
       const chartRefObj = chartRefs.current[i];
       if (!chartRefObj || !chartRefObj.domRef) return;
 
@@ -172,6 +175,9 @@ export default function MultiTimeSeries({
       // Y-axis min/max
       const [graphMin, graphMax] = computeYAxisRange(dk, chartDataList[i]);
 
+      const cWidth = chartInstance.getDom()?.clientWidth || 200;
+      const tooltipFontSize = Math.max(10, Math.min(cWidth / 35, 12));
+
       const chartOption = {
         xAxis: {
           type: "time",
@@ -196,7 +202,43 @@ export default function MultiTimeSeries({
           bottom: i === dataKeys.length - 1 ? additionalHeight : 1
         },
         tooltip: {
-          // ... your tooltip config
+          trigger: 'axis',
+          triggerOn: 'mousemove|click',
+          backgroundColor: 'rgba(0,0,0,0.8)',
+          borderWidth: 0,
+          padding: 5,
+          textStyle: { color: '#fff', fontSize: tooltipFontSize, align: 'left' },
+          position: function (pos, params, dom, rect, size) {
+            // Custom position logic to nudge tooltip left or right
+            const indexPos =
+              ((params[0].axisValue - theMinTime) / (theMaxTime - theMinTime)) *
+              size.viewSize[0];
+            const defaultPosition = indexPos + 15;
+            const altPosition = indexPos - 10 - size.contentSize[0];
+            if (defaultPosition + size.contentSize[0] > size.viewSize[0]) {
+              return { top: 0, left: altPosition };
+            }
+            return { top: 0, left: defaultPosition };
+          },
+          formatter: (params) => {
+            if (!params.length) return '';
+            // First param gives the date
+            const dateObj = new Date(params[0].axisValue);
+            const dateStr = `${dateObj.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            })} ${dateObj.getHours()}:${String(dateObj.getMinutes()).padStart(2, '0')}`;
+            const tipLines = params.map((p) => {
+              const val = p.value[1];
+              const c = lineColor;
+              const colorBorder = isColorDark(c) ? 'border: 1px solid grey;' : '';
+              return `<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:${c};${colorBorder}"></span>
+                ${formatNumberWithCommas(val.toFixed(dataKeyDecimals(dataKey)))}${dataKeyUnits(dataKey)}`;
+            });
+            // Optionally append the "Cursor Height" if showMouseHeight
+            return `${dateStr}<br/>${tipLines.join('<br/>')}<br/>${chartInstance.myMouseLocation || ''}`;
+          }
         },
         series: allSeries
       };

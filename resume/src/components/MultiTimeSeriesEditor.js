@@ -94,8 +94,8 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
     const newIndex = dataKeys.length + 1;
     const newLabel = `DataKey ${newIndex}`;
 
-    function getRandomTimeSeriesData() {
-      const units = [
+    function getRandomTimeSeriesData(datakeys) {
+      let units = [
         { shorthand: "°C", label: "Temperature", initial: () => 15 + Math.random() * 20, decimals: 2 },
         { shorthand: "%", label: "Humidity", initial: () => 30 + Math.random() * 50, decimals: 0 },
         { shorthand: "kPa", label: "Pressure", initial: () => 95 + Math.random() * 10, decimals: 2 },
@@ -117,6 +117,12 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
         { shorthand: "km/h", label: "Speed", initial: () => 20 + Math.random() * 80, decimals: 1 },
       ];
 
+      // Exclude units that share a label with any existing dataKeys
+      let remainingUnits = units.filter(unit => !dataKeys.some(dataKey => dataKey.dataKey.label === unit.label));
+      if (remainingUnits.length > 0) { units = remainingUnits; }
+
+      console.log("hherjes", units);
+
       // Randomly select a unit
       const selectedUnit = units[Math.floor(Math.random() * units.length)];
 
@@ -131,7 +137,7 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
       };
     }
 
-    let measurement = getRandomTimeSeriesData();
+    let measurement = getRandomTimeSeriesData(dataKeys);
 
     let barGraph = Math.random() < 0.2;
 
