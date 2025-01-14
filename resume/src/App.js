@@ -101,35 +101,38 @@ const App = () => {
 
           <HeroSection />
 
-          <h2>Projects</h2>
-          <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "10px" }}>
-            <AnimatedButton settings={handsButton} />
-            <AnimatedButton settings={bookingsButton} />
-            <AnimatedButton settings={ttqbcButton} />
-            <AnimatedButton settings={troublemakerButton} />
+          <div id="projects" style={{ scrollMarginTop: "100px" }}>
+            <h2>Projects</h2>
+            <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "10px" }}>
+              <AnimatedButton settings={handsButton} />
+              <AnimatedButton settings={bookingsButton} />
+              <AnimatedButton settings={ttqbcButton} />
+              <AnimatedButton settings={troublemakerButton} />
+            </div>
           </div>
 
-          <h2>Work Experience</h2>
+          <div id="experience" style={{ scrollMarginTop: "100px" }}>
+            <h2>Work Experience</h2>
 
-          <img src={peakhydro} style={{ maxWidth: "900px" }}></img>
+            <img src={peakhydro} style={{ maxWidth: "900px" }}></img>
 
-          <div style={{
-            // height: "400px", 
-            width: "100%", display: "flex", // Enables flexbox
-            justifyContent: "center", // Centers horizontally
-            alignItems: "center", // Centers vertically 
-            // border: "1px solid black"
-          }}>
-            {/* < MultiTimeSeries
+            <div style={{
+              // height: "400px", 
+              width: "100%", display: "flex", // Enables flexbox
+              justifyContent: "center", // Centers horizontally
+              alignItems: "center", // Centers vertically 
+              // border: "1px solid black"
+            }}>
+              {/* < MultiTimeSeries
               data={data}            // The multi-array of timeseries data
               dataKeys={dataKeys}    // Metadata (labels, color, decimals, etc.)
               settings={settings}    // Global widget configuration
               minTime={minTime}      // Earliest timestamp
               maxTime={maxTime}      // Latest timestamp
             /> */}
-            <MultiTimeSeriesEditor />
+              <MultiTimeSeriesEditor />
+            </div>
           </div>
-
         </div >
       </main >
 
@@ -139,42 +142,43 @@ const App = () => {
           Contact Me
         </a>
       </footer> */}
+      <div id="contact" style={{ scrollMarginTop: "100px" }}>
 
-      <footer style={{ padding: "20px", backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white", textAlign: "center", fontSize: "14px" }}>
-        <p style={{ margin: "5px 0" }}>
-          <a
-            href="https://linkedin.com/in/jared-tweed"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "white", textDecoration: "underline", marginRight: "10px" }}
-          >
-            linkedin.com/in/jared-tweed
-          </a>
-          |
-          <a
-            href="https://github.com/JaredTweed"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "white", textDecoration: "underline", margin: "0 10px" }}
-          >
-            github.com/JaredTweed
-          </a>
-          |
-          <a
-            href="https://w.wiki/9JKw"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "white", textDecoration: "underline", marginLeft: "10px" }}
-          >
-            Wikipedia Contributions
-          </a>
-        </p>
-        <p style={{ margin: "5px 0" }}>
-          778-979-0126 | <a href="mailto:jaredtwe@gmail.com" style={{ color: "white", textDecoration: "underline" }}>jaredtwe@gmail.com</a>
-        </p>
-        <p style={{ margin: "15px 0 0" }}>&copy; 2025 Jared Tweed. All Rights Reserved.</p>
-      </footer>
-
+        <footer style={{ padding: "20px", backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white", textAlign: "center", fontSize: "14px" }}>
+          <p style={{ margin: "5px 0" }}>
+            <a
+              href="https://linkedin.com/in/jared-tweed"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "white", textDecoration: "underline", marginRight: "10px" }}
+            >
+              linkedin.com/in/jared-tweed
+            </a>
+            |
+            <a
+              href="https://github.com/JaredTweed"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "white", textDecoration: "underline", margin: "0 10px" }}
+            >
+              github.com/JaredTweed
+            </a>
+            |
+            <a
+              href="https://w.wiki/9JKw"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "white", textDecoration: "underline", marginLeft: "10px" }}
+            >
+              Wikipedia Contributions
+            </a>
+          </p>
+          <p style={{ margin: "5px 0" }}>
+            778-979-0126 | <a href="mailto:jaredtwe@gmail.com" style={{ color: "white", textDecoration: "underline" }}>jaredtwe@gmail.com</a>
+          </p>
+          <p style={{ margin: "15px 0 0" }}>&copy; 2025 Jared Tweed. All Rights Reserved.</p>
+        </footer>
+      </div>
 
       <style>
         {`

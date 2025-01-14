@@ -84,7 +84,7 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
 
       dataRef.current = newData;
       setData(newData);
-    }, 5000);
+    }, 50000);
 
     return () => clearInterval(interval);
   }, [dataKeys]); // Add `dataKeys` as a dependency to reflect changes

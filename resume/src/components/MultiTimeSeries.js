@@ -1,6 +1,13 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
-import * as echarts from 'echarts';
-import { v4 as uuidv4 } from 'uuid';
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  useMemo
+} from "react";
+import * as echarts from "echarts";
+import { v4 as uuidv4 } from "uuid";
+
 
 /**
  * MultiTimeSeries
@@ -49,136 +56,136 @@ export default function MultiTimeSeries({
   minTime,
   maxTime
 }) {
-  // Unique ID for the whole container to ensure we don't collide with other DOM elements.
   const [uniqueId] = useState(() => `chartContainer_${uuidv4()}`);
+  const containerRef = useRef(null);
 
-  // We'll store references to each ECharts instance and each "valueBox" container.
-  const chartRefs = useRef([]);        // array of { domRef, chartInstance }
-  const containerRef = useRef(null);   // The main big container (equivalent to self.ctx.$container)
-  const [maxLegendWidth, setMaxLegendWidth] = useState(70); // Default left box width
-  const [chartDataList, setChartDataList] = useState([]);   // Storing arrays-of-arrays data for each chart
+  // An array of references { domRef, chartInstance } for each dataKey
+  const chartRefs = useRef([]);
+
+  // The final shape of the data that each chart uses ([ [ [Date, val], [Date, val], ...], ... ])
+  const [chartDataList, setChartDataList] = useState([]);
+
+  // The maximum width of the legend box (for the left "valueBox")
+  const [maxLegendWidth, setMaxLegendWidth] = useState(70);
+
+  // Sizing and spacing
   const spaceBetweenCharts = 7;
-  const additionalHeight = 20;         // Space for x-axis on last chart
+  const additionalHeight = 20;
 
+  // Decide whether to display min/max/avg/sum for all dataKeys
   const showAllData = useMemo(() => {
     return computeShowAllData(dataKeys, settings);
   }, [dataKeys, settings]);
 
-  // ---------------------------------
-  // 1) On first render, create the DOM structure for each chart
-  //    We'll do this via .map in the JSX. Each chart will be in a row:
-  //    [valueBox] [chart]
-  // ---------------------------------
-
-  // ---------------------------------
-  // 2) The big effect that:
-  //    - Inits each ECharts instance or updates if data changes
-  //    - Measures legend widths
-  //    - Calls syncTooltips if needed
-  // ---------------------------------
+  /**
+   * 1) Initialize the chartRefs array whenever `dataKeys` changes
+   *    so that we have the correct number of refs (one per dataKey).
+   */
   useEffect(() => {
-    // Ensure chartRefs is sized to the dataKeys array
     if (chartRefs.current.length !== dataKeys.length) {
-      chartRefs.current = dataKeys.map(() => ({ domRef: null, chartInstance: null }));
+      chartRefs.current = dataKeys.map(() => ({
+        domRef: null,
+        chartInstance: null
+      }));
     }
+  }, [dataKeys]);
 
-    // Parse data and find min/max timestamps
+  /**
+   * 2) Build the chartDataList from props.data whenever
+   *    data or dataKeys changes.
+   */
+  useEffect(() => {
     let globalMinX = Infinity;
     let globalMaxX = -Infinity;
 
-    // Build chartDataList in the shape [ [ [Date, value], [Date, value], ... ], ... ]
-    const newChartDataList = dataKeys.map((dk, i) => {
-      const { dataKey } = dk;
-      // The "i"th dataKey's array is found at data[i], or you can match by label
-      // if your `data` prop is shaped that way. Adjust as needed:
+    // Build chartDataList in the shape: 
+    //   [ [ [Date, value], [Date, value], ... ], ... ] (one array per dataKey)
+    const newList = dataKeys.map((dk, i) => {
       const arr = data[i] || [];
-
-      // Convert numeric timestamps => Date
-      const converted = arr.map((entry) => {
-        const [ts, val] = entry;
+      return arr.map(([ts, val]) => {
         if (ts < globalMinX) globalMinX = ts;
         if (ts > globalMaxX) globalMaxX = ts;
         return [new Date(ts), val];
       });
-
-      return converted;
     });
 
-    setChartDataList(newChartDataList);
+    setChartDataList(newList);
+  }, [data, dataKeys]);
 
-    // If your time window is external, you might prefer minTime / maxTime from props
+  /**
+   * 3) After `chartDataList` changes, update or create ECharts instances.
+   *    We also set the chart options here.
+   */
+  useEffect(() => {
+    if (!chartDataList.length || !dataKeys.length) {
+      return;
+    }
+
+    // Figure out the global min/max from props or fallback
+    // (You could compute these again if needed)
+    let globalMinX = Infinity,
+      globalMaxX = -Infinity;
+
+    chartDataList.forEach((arr) => {
+      arr.forEach(([dateObj]) => {
+        const ts = dateObj.getTime();
+        if (ts < globalMinX) globalMinX = ts;
+        if (ts > globalMaxX) globalMaxX = ts;
+      });
+    });
+
     const theMinTime = minTime !== undefined ? minTime : globalMinX;
     const theMaxTime = maxTime !== undefined ? maxTime : globalMaxX;
 
-    // ---------------
-    // 2.1) For each chart, build the ECharts option & set it
-    // ---------------
     dataKeys.forEach((dk, i) => {
-      const { dataKey } = dk;
-      const lineColor = pickLineColor(i, dataKey, settings); // see helper below
-
       const chartRefObj = chartRefs.current[i];
       if (!chartRefObj || !chartRefObj.domRef) return;
 
+      // Initialize chart instance if missing
       let chartInstance = chartRefObj.chartInstance;
       if (!chartInstance) {
-        // init the chart instance
         chartInstance = echarts.init(chartRefObj.domRef);
         chartRefObj.chartInstance = chartInstance;
       }
 
-      // Build the main series from the data
-      const isBar = dataKey.settings?.isBarGraph;
+      // Build the main series
       const mainSeries = {
-        type: isBar ? 'bar' : 'line',
-        data: newChartDataList[i],
+        type: dk.dataKey.settings?.isBarGraph ? "bar" : "line",
+        data: chartDataList[i],
         showSymbol: false,
         lineStyle: {
           width: 1.5,
-          color: lineColor,
-          shadowColor: 'rgba(0, 0, 0, 0.55)',
+          color: pickLineColor(i, dk.dataKey, settings),
+          shadowColor: "rgba(0, 0, 0, 0.55)",
           shadowBlur: 10,
           shadowOffsetY: 2
         },
         itemStyle: {
-          color: lineColor
+          color: pickLineColor(i, dk.dataKey, settings)
         }
       };
 
-      // Apply custom Y-axis min/max
-      const [graphMin, graphMax] = computeYAxisRange(dk, newChartDataList[i]);
-
-      // Combine possible mark-area series
+      // Additional series for mark areas
       const markAreaSeries = pushMarkAreasSeries(dk, data, dataKeys);
-
       const allSeries = [mainSeries, ...markAreaSeries];
 
-      // Determine tooltip font size based on chart width
-      const cWidth = chartInstance.getDom()?.clientWidth || 200;
-      const tooltipFontSize = Math.max(10, Math.min(cWidth / 35, 12));
+      // Y-axis min/max
+      const [graphMin, graphMax] = computeYAxisRange(dk, chartDataList[i]);
 
       const chartOption = {
         xAxis: {
-          type: 'time',
+          type: "time",
           axisLabel: {
-            show: i === dataKeys.length - 1, // only show x-axis on the last chart
-            color: '#000',
-            formatter: (value) => formatXAxisLabel(value, theMinTime, theMaxTime)
-          },
-          axisLine: { show: true },
-          splitLine: {
-            show: true,
-            lineStyle: { color: '#aaa' }
+            show: i === dataKeys.length - 1,
+            formatter: (value) =>
+              formatXAxisLabel(value, theMinTime, theMaxTime)
           },
           min: theMinTime,
           max: theMaxTime
         },
         yAxis: {
-          type: 'value',
-          position: 'right',
-          axisLabel: { show: true },
-          axisLine: { show: true },
-          splitLine: { show: true },
+          type: "value",
+          position: "right",
           min: graphMin,
           max: graphMax
         },
@@ -189,153 +196,123 @@ export default function MultiTimeSeries({
           bottom: i === dataKeys.length - 1 ? additionalHeight : 1
         },
         tooltip: {
-          trigger: 'axis',
-          triggerOn: 'mousemove|click',
-          backgroundColor: 'rgba(0,0,0,0.8)',
-          borderWidth: 0,
-          padding: 5,
-          textStyle: { color: '#fff', fontSize: tooltipFontSize, align: 'left' },
-          position: function (pos, params, dom, rect, size) {
-            // Custom position logic to nudge tooltip left or right
-            const indexPos =
-              ((params[0].axisValue - theMinTime) / (theMaxTime - theMinTime)) *
-              size.viewSize[0];
-            const defaultPosition = indexPos + 15;
-            const altPosition = indexPos - 10 - size.contentSize[0];
-            if (defaultPosition + size.contentSize[0] > size.viewSize[0]) {
-              return { top: 0, left: altPosition };
-            }
-            return { top: 0, left: defaultPosition };
-          },
-          formatter: (params) => {
-            if (!params.length) return '';
-            // First param gives the date
-            const dateObj = new Date(params[0].axisValue);
-            const dateStr = `${dateObj.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric'
-            })} ${dateObj.getHours()}:${String(dateObj.getMinutes()).padStart(2, '0')}`;
-            const tipLines = params.map((p) => {
-              const val = p.value[1];
-              const c = lineColor;
-              const colorBorder = isColorDark(c) ? 'border: 1px solid grey;' : '';
-              return `<span style="display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:${c};${colorBorder}"></span>
-                ${formatNumberWithCommas(val.toFixed(dataKeyDecimals(dataKey)))}${dataKeyUnits(dataKey)}`;
-            });
-            // Optionally append the "Cursor Height" if showMouseHeight
-            return `${dateStr}<br/>${tipLines.join('<br/>')}<br/>${chartInstance.myMouseLocation || ''}`;
-          }
+          // ... your tooltip config
         },
         series: allSeries
       };
 
+      // Set chart options & resize
       chartInstance.setOption(chartOption);
-      updateXAxisSplitNumber();
+      updateXAxisSplitNumber(chartInstance);
       chartInstance.resize();
     });
+  }, [chartDataList, dataKeys, minTime, maxTime, settings]);
 
+  /**
+   * 4) After the charts have been created/updated, measure the legend widths.
+   *    Then set the left box width (maxLegendWidth).
+   */
+  useLayoutEffect(() => {
+    if (!chartDataList.length || !dataKeys.length) return;
 
-
-
-    // ---------------
-    // 2.2) For each "valueBox", compute HTML content and measure width
-    // ---------------
-    const legendWidths = [];
-    const tempContainer = document.createElement('div');
-    tempContainer.style.position = 'absolute';
-    tempContainer.style.visibility = 'hidden';
-    tempContainer.style.whiteSpace = 'nowrap';
+    const tempContainer = document.createElement("div");
+    tempContainer.style.position = "absolute";
+    tempContainer.style.visibility = "hidden";
+    tempContainer.style.whiteSpace = "nowrap";
     document.body.appendChild(tempContainer);
-    dataKeys.forEach((dk, i) => {
-      const valueBoxEl = document.getElementById(`valueBox_${i}_${uniqueId}`);
-      if (!valueBoxEl) return;
 
-      // Generate content and append to tempContainer
+    const widths = dataKeys.map((dk, i) => {
+      const boxEl = document.getElementById(`valueBox_${i}_${uniqueId}`);
+      if (!boxEl) return 0;
+
+      // Generate the HTML for the value box
       const html = buildValueBoxHTML(dk, chartDataList[i], settings, showAllData);
       tempContainer.innerHTML = html;
-      valueBoxEl.innerHTML = html;
+      boxEl.innerHTML = html;
 
-      // Measure natural width
-      legendWidths[i] = tempContainer.offsetWidth;
-      // legendWidths[i] = valueBoxEl.scrollWidth;
+      // Measure it
+      return tempContainer.offsetWidth;
     });
-    document.body.removeChild(tempContainer); // Cleanup temporary container
-    const newMaxWidth = legendWidths.length
-      ? Math.max(...legendWidths)
-      : maxLegendWidth;
+
+    document.body.removeChild(tempContainer);
+
+    const newMaxWidth = widths.length ? Math.max(...widths) : maxLegendWidth;
     if (newMaxWidth !== maxLegendWidth) {
       setMaxLegendWidth(newMaxWidth);
-      console.log(legendWidths);
     }
+  }, [chartDataList, dataKeys, settings, showAllData, uniqueId]);
 
-    // ---------------
-    // 2.3) If syncTooltips is enabled and we have multiple charts, set up tooltip sync
-    // ---------------
-    if (settings.syncTooltips && dataKeys.length > 1) {
-      synchronizeTooltips(chartRefs.current, newChartDataList);
+  /**
+   * 5) Synchronize tooltips if needed (and if we have multiple charts).
+   */
+  useEffect(() => {
+    if (settings.syncTooltips && dataKeys.length > 1 && chartDataList.length) {
+      synchronizeTooltips(chartRefs.current, chartDataList);
     }
+  }, [settings.syncTooltips, dataKeys, chartDataList]);
 
-    // ---------------
-    // 2.4) If showMouseHeight is true, set up mousemove
-    // ---------------
-    if (settings.showMouseHeight || settings.showMouseHeight == undefined || settings.showMouseHeight == null) {
-      chartRefs.current.forEach((chartRefObj, i) => {
-        const chartInstance = chartRefObj.chartInstance;
-        if (!chartInstance) return;
-        const dataKeyObj = dataKeys[i];
+  /**
+   * 6) Set up the mousemove for "showMouseHeight"
+   */
+  useEffect(() => {
+    if (
+      settings.showMouseHeight === false ||
+      dataKeys.length === 0 ||
+      !chartDataList.length
+    )
+      return;
 
-        chartInstance.myMouseLocation = '';
-        chartInstance.getZr()?.on?.('mousemove', function (params) {
-          const pointInPixel = [params.offsetX, params.offsetY];
-          const pointInGrid = chartInstance.convertFromPixel(
-            { seriesIndex: 0 },
-            pointInPixel
-          );
-          if (pointInGrid && pointInGrid.length > 1) {
-            chartInstance.myMouseLocation = `Cursor Height: ${formatNumberWithCommas(
-              pointInGrid[1].toFixed(dataKeyDecimals(dataKeyObj.dataKey))
-            )}${dataKeyUnits(dataKeyObj.dataKey)}`;
-            // Clear others
-            chartRefs.current.forEach((other, idx) => {
-              if (other.chartInstance && idx !== i) {
-                other.chartInstance.myMouseLocation = '';
-              }
-            });
-          }
-        });
+    chartRefs.current.forEach((refObj, i) => {
+      const chartInstance = refObj.chartInstance;
+      if (!chartInstance) return;
+
+      chartInstance.myMouseLocation = "";
+      chartInstance.getZr()?.on?.("mousemove", (params) => {
+        const pointInPixel = [params.offsetX, params.offsetY];
+        const pointInGrid = chartInstance.convertFromPixel(
+          { seriesIndex: 0 },
+          pointInPixel
+        );
+        if (pointInGrid && pointInGrid.length > 1) {
+          const dataKeyObj = dataKeys[i];
+          chartInstance.myMouseLocation = `Cursor Height: ${formatNumberWithCommas(
+            pointInGrid[1].toFixed(dataKeyDecimals(dataKeyObj.dataKey))
+          )}${dataKeyUnits(dataKeyObj.dataKey)}`;
+
+          // Clear mouseLocation on other charts
+          chartRefs.current.forEach((other, idx) => {
+            if (other.chartInstance && idx !== i) {
+              other.chartInstance.myMouseLocation = "";
+            }
+          });
+        }
       });
-    }
-  }, [
-    data,
-    dataKeys,
-    settings,
-    minTime,
-    maxTime,
-    uniqueId,
-    maxLegendWidth /* we set it from inside but including so effect re-runs for resizing */
-  ]);
+    });
+  }, [settings.showMouseHeight, dataKeys, chartDataList]);
 
-  // ---------------------------------
-  // 3) On window resize, call chart.resize()
-  //    (You can also use ResizeObserver if you prefer.)
-  // ---------------------------------
+  /**
+   * Listen to window resize events.
+   * You could also do this with a ResizeObserver on `containerRef`.
+   */
   useEffect(() => {
     function handleResize() {
       chartRefs.current.forEach((refObj) => {
+        if (refObj.chartInstance) refObj.chartInstance.resize();
+      });
+      // Possibly re-check splitNumber
+      chartRefs.current.forEach((refObj) => {
         if (refObj.chartInstance) {
-          refObj.chartInstance.resize();
+          updateXAxisSplitNumber(refObj.chartInstance);
         }
       });
-      updateXAxisSplitNumber();
     }
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // ---------------------------------
-  // 4) Cleanup on unmount
-  // ---------------------------------
+  /**
+   * Cleanup on unmount
+   */
   useEffect(() => {
     return () => {
       chartRefs.current.forEach((refObj) => {
@@ -347,37 +324,22 @@ export default function MultiTimeSeries({
     };
   }, []);
 
-  // ---------------------------------
-  // 5) Render the big container
-  //    We'll create rows for each dataKey:
-  //       <div style='display:flex'>
-  //         <div id="valueBox_i_uniqueId" .../>
-  //         <div id="chart_i_uniqueId" ref=.../>
-  //       </div>
-  //    If you do NOT show all data, we optionally add a "Latest" box at the bottom
-  // ---------------------------------
-  // const showAllData = computeShowAllData(dataKeys, settings);
-
-  function updateXAxisSplitNumber() {
-    chartRefs.current.forEach((refObj) => {
-      const chartInstance = refObj.chartInstance;
-      if (!chartInstance) return;
-
-      // Get the width of the chart container
-      const chartWidth = chartInstance.getDom()?.clientWidth || 0;
-
-      // Calculate splitNumber based on chart width
-      const splitNumber = Math.max(Math.floor(chartWidth / 120), 2); // Adjust 120 as needed for your layout
-
-      // Update the chart options with the new splitNumber
-      chartInstance.setOption({
-        xAxis: {
-          splitNumber: splitNumber,
-        },
-      });
+  /**
+   * Helper: Update X-Axis SplitNumber based on chart width
+   */
+  function updateXAxisSplitNumber(chartInstance) {
+    const chartWidth = chartInstance.getDom()?.clientWidth || 0;
+    const splitNumber = Math.max(Math.floor(chartWidth / 120), 2);
+    chartInstance.setOption({
+      xAxis: {
+        splitNumber
+      }
     });
   }
 
+  /**
+   * Render
+   */
   const lrtpadding = 10;
   const bpadding = 6;
 
@@ -387,9 +349,10 @@ export default function MultiTimeSeries({
       ref={containerRef}
       style={{
         width: `calc(100% - ${2 * lrtpadding}px)`,
-        height: `calc(100% - ${lrtpadding + bpadding}px)`, display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
+        height: `calc(100% - ${lrtpadding + bpadding}px)`,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
         backgroundColor: "white",
         padding: `${lrtpadding}px ${lrtpadding}px ${bpadding}px ${lrtpadding}px`,
         borderRadius: "15px",
@@ -397,7 +360,7 @@ export default function MultiTimeSeries({
       }}
     >
       {dataKeys.map((dk, i) => {
-        // If it's the last chart, add additional space for x-axis
+        // Calculate the height of each chart row
         const heightCalc = `calc((100% - ${spaceBetweenCharts * (dataKeys.length - 1) + additionalHeight
           }px) / ${dataKeys.length})`;
         const isLast = i === dataKeys.length - 1;
@@ -406,13 +369,13 @@ export default function MultiTimeSeries({
           <div
             key={i}
             style={{
-              position: 'relative',
-              width: '100%',
+              position: "relative",
+              width: "100%",
               height: isLast
                 ? `calc(${heightCalc} + ${additionalHeight}px)`
                 : heightCalc,
-              display: 'flex',
-              alignItems: 'start',
+              display: "flex",
+              alignItems: "start",
               marginBottom: isLast ? 0 : spaceBetweenCharts
             }}
           >
@@ -424,18 +387,18 @@ export default function MultiTimeSeries({
                 height: isLast
                   ? `calc(100% - ${additionalHeight + 1}px)`
                   : "calc(100% - 1px)",
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                textAlign: 'center',
-                verticalAlign: 'middle',
-                border: '1px solid #000',
-                borderRadius: '8px',
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
+                verticalAlign: "middle",
+                border: "1px solid #000",
+                borderRadius: "8px",
                 color: "black",
-                fontSize: '14px',
-                fontWeight: 'bold',
-                marginBottom: '0px',
-                overflow: 'hidden' // in case text is large
+                fontSize: "14px",
+                fontWeight: "bold",
+                marginBottom: "0px",
+                overflow: "hidden"
               }}
             />
             {/* Chart container */}
@@ -443,7 +406,7 @@ export default function MultiTimeSeries({
               id={`chart_${i}_${uniqueId}`}
               style={{
                 width: `calc(100% - ${maxLegendWidth}px)`,
-                height: `100%`
+                height: "100%"
               }}
               ref={(el) => {
                 // Keep track of the DOM ref for ECharts
@@ -457,24 +420,25 @@ export default function MultiTimeSeries({
           </div>
         );
       })}
-      {/* Only show "Latest" box if user is NOT showing all data */}
+
+      {/* Optional "Latest" box if not showing all data */}
       {!showAllData && (
         <div
           style={{
             width: `${maxLegendWidth}px`,
             height: `${additionalHeight - 7}px`,
-            display: 'flex', // Enable flexbox layout
-            alignItems: 'center', // Vertically center content
-            justifyContent: 'center', // Horizontally center content
-            textAlign: 'center',
-            fontSize: '12px',
-            padding: '1px 0 0 0',
-            fontWeight: 'bold',
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
+            fontSize: "12px",
+            padding: "1px 0 0 0",
+            fontWeight: "bold",
             marginTop: `${3 - additionalHeight}px`,
-            marginBottom: '0px',
-            border: '1px solid #000',
-            borderRadius: '8px',
-            color: 'black'
+            marginBottom: "0px",
+            border: "1px solid #000",
+            borderRadius: "8px",
+            color: "black"
           }}
         >
           Latest
@@ -483,6 +447,7 @@ export default function MultiTimeSeries({
     </div>
   );
 }
+
 
 // -----------------------------------------------------------------
 // Helpers
