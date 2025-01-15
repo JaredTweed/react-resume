@@ -4,7 +4,66 @@ h2 {
   line-height: 1rem;
 }
 
-.job-heading {
+.job {
+  display: flex;
+  flex-direction: row;
+  /* border: 1px solid black; */
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.job-text {
   text-align: left;
   color: black;
+  max-width: 800px;
+}
+
+
+
+
+.job-text .header {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  /* Adds spacing between rows */
+}
+
+.job-text .title-and-date {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  /* Aligns title and date vertically at the top */
+}
+
+.job-text .header * {
+  /* border: 1px solid black; */
+  margin: 0;
+}
+
+.job-text .company-and-location {
+  display: flex;
+  justify-content: space-between;
+  font-style: italic;
+}
+
+
+
+.job-text .date,
+.job-text .location {
+  text-align: right;
+}
+
+.job-text .company,
+.job-text .location {
+  font-style: italic;
+}
+
+@media screen and (max-width: 1180px) {
+  .job {
+    flex-direction: column;
+    /* Stacks items vertically */
+  }
 }

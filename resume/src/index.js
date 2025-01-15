@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     {/* Grainy Effect Overlay */}
-    {/* <div
+    <div
       style={{
         position: "fixed",
         top: 0,
@@ -18,6 +18,7 @@ root.render(
         zIndex: 9999, // Ensure it stays above everything
         pointerEvents: "none", // Allow interactions with underlying elements
         opacity: 0.2, // Adjust intensity
+        display: "none"
       }}
     >
       <svg style={{ width: "100%", height: "100%" }}>
@@ -42,7 +43,7 @@ root.render(
           fill="white"
         />
       </svg>
-    </div> */}
+    </div>
 
     {/* Main App */}
     <App />

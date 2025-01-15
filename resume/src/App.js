@@ -17,7 +17,6 @@ import troublemakerIcon from "./assets/troublemaker.jpg";
 import tetrisbookingIcon from "./assets/tetrisbooking.png";
 import tealBlackVideo from "./assets/teal-black.mp4"; // Import the video file
 import background from "./assets/texture1.jpg";
-import peakhydro from "./assets/work-experience.png";
 
 const App = () => {
   const [showText, setShowText] = useState(false);
@@ -111,59 +110,62 @@ const App = () => {
             </div>
           </div>
 
-          <div id="experience" style={{ scrollMarginTop: "100px" }}>
+          <div id="experience" style={{
+            scrollMarginTop: "100px", position: "relative",
+            // border: "1px solid black"
+            width: "100%"
+          }}>
+            <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "100%", zIndex: 100 }}></div>
+
             <h2>Work Experience</h2>
 
-            {/* <img src={peakhydro} style={{ maxWidth: "900px" }}></img> */}
+            <div className="job">
+              <div className="job-text" style={{ margin: "20px" }}>
+                <div className="header">
+                  <div className="title-and-date">
+                    <h3 className="title">Full Stack Developer</h3>
+                    <p className="date"><strong>Apr 2024 - Present</strong></p>
+                  </div>
+                  <div className="company-and-location">
+                    <p className="company">Peak HydroMet Solutions</p>
+                    <p className="location">British Columbia, Canada</p>
+                  </div>
+                </div>
 
-            <div className="job-heading">
-              <h3>Full Stack Developer</h3>
-              <p><strong>Apr 2024 - Present</strong></p>
-              <p>Peak HydroMet Solutions</p>
-              <p>British Columbia, Canada</p>
-              <ul>
-                <li>
-                  <strong>Soft Skills:</strong> Engaged in in-person product improvement discussions with clients and worked as the sole developer for the business.
-                </li>
-                <li>
-                  <strong>Data Processing:</strong> Parsed JSON, XML, and CSV data using Python and utilized multithreading to optimize data curation speeds.
-                </li>
-                <li>
-                  <strong>Front End:</strong> Built custom widgets for ThingsBoard, implemented features using HTML, CSS, and JavaScript, optimized the ECharts.js charting library through multithreading, and provided UX design recommendations.
-                </li>
-                <li>
-                  <strong>Back End:</strong> Developed backend solutions using Node-RED, researched optimal APIs through documentation reviews, implemented email subscriptions using SendGrid and AWS Lambda/EC2, integrated MongoDB with Node.js, and worked with MQTT protocols.
-                </li>
-              </ul>
+                <ul>
+                  <li>
+                    <strong>Soft Skills:</strong> Engaged in in-person product improvement discussions with clients and worked as the sole developer for the business.
+                  </li>
+                  <li>
+                    <strong>Data Processing:</strong> Parsed JSON, XML, and CSV data using Python and utilized multithreading to optimize data curation speeds.
+                  </li>
+                  <li>
+                    <strong>Front End:</strong> Built custom widgets for ThingsBoard, implemented features using HTML, CSS, and JavaScript, optimized the ECharts.js charting library through multithreading, and provided UX design recommendations.
+                  </li>
+                  <li>
+                    <strong>Back End:</strong> Developed backend solutions using Node-RED, researched optimal APIs through documentation reviews, implemented email subscriptions using SendGrid and AWS Lambda/EC2, integrated MongoDB with Node.js, and worked with MQTT protocols.
+                  </li>
+                </ul>
+              </div>
+
+              <div className="MultiTimeSeriesEditor-container" style={{
+                width: "800px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                margin: "20px"
+              }}>
+                <MultiTimeSeriesEditor />
+              </div>
             </div>
 
-
-            <div style={{
-              // height: "400px", 
-              width: "100%", display: "flex", // Enables flexbox
-              justifyContent: "center", // Centers horizontally
-              alignItems: "center", // Centers vertically 
-              // border: "1px solid black"
-            }}>
-              {/* < MultiTimeSeries
-              data={data}            // The multi-array of timeseries data
-              dataKeys={dataKeys}    // Metadata (labels, color, decimals, etc.)
-              settings={settings}    // Global widget configuration
-              minTime={minTime}      // Earliest timestamp
-              maxTime={maxTime}      // Latest timestamp
-            /> */}
-              <MultiTimeSeriesEditor />
-            </div>
           </div>
+
+
+          {/* </div> */}
         </div >
       </main >
 
-      {/* <footer style={{ padding: "10px", backgroundColor: "rgba(0, 0, 0, 0.7)" }}>
-        <p>&copy; 2025 Jared Tweed. All Rights Reserved.</p>
-        <a href="mailto:jaredtwe@gmail.com" style={{ color: "white", textDecoration: "none" }}>
-          Contact Me
-        </a>
-      </footer> */}
       <div id="contact" style={{ scrollMarginTop: "100px" }}>
 
         <footer style={{ padding: "20px", backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white", textAlign: "center", fontSize: "14px" }}>
