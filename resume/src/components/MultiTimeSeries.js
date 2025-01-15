@@ -377,6 +377,22 @@ export default function MultiTimeSeries({
     });
   }
 
+  // Right after your existing useLayoutEffect that sets maxLegendWidth, add this:
+  useLayoutEffect(() => {
+    // If we haven’t rendered charts yet, do nothing:
+    if (!chartRefs.current.length) return;
+
+    // Force each chart to recalc its width
+    chartRefs.current.forEach((refObj) => {
+      if (refObj.chartInstance) {
+        refObj.chartInstance.resize();
+        // Also call updateXAxisSplitNumber if needed
+        updateXAxisSplitNumber(refObj.chartInstance);
+      }
+    });
+  }, [maxLegendWidth]);
+
+
   /**
    * Render
    */
@@ -446,7 +462,8 @@ export default function MultiTimeSeries({
               id={`chart_${i}_${uniqueId}`}
               style={{
                 width: `calc(100% - ${maxLegendWidth}px)`,
-                height: "100%"
+                height: "100%",
+                // border: "1px solid black"
               }}
               ref={(el) => {
                 // Keep track of the DOM ref for ECharts
@@ -466,7 +483,7 @@ export default function MultiTimeSeries({
         <div
           style={{
             width: `${maxLegendWidth}px`,
-            height: `${additionalHeight - 7}px`,
+            height: `${additionalHeight - 5}px`,
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

@@ -47,17 +47,6 @@ const App = () => {
     link: "https://jaredtweed.github.io/tetrisbooking/",
   };
 
-  const resumeButton = {
-    selectedIcon: "mdi:download",
-    iconSize: 60,
-    fontSize: "25px",
-    height: 50,
-    width: 200,
-    color: "#007070",
-    text: "Resume",
-    link: "https://raw.githubusercontent.com/JaredTweed/jaredtweed/main/JaredTweed-Resume.pdf",
-  };
-
 
   const handleTimeUpdate = () => {
     const video = videoRef.current;
@@ -73,8 +62,6 @@ const App = () => {
   return (
     <div
       style={{
-        // backgroundImage: `url(${background})`,
-        backgroundColor: "#DAA06D",
         backgroundSize: "cover",
         backgroundAttachment: "fixed",
         fontFamily: "Poppins, sans-serif",
@@ -91,16 +78,13 @@ const App = () => {
       <main>
 
         <div style={{
-          // height: "100vh",
-          // padding: "10px",
           fontFamily: "Poppins, sans-serif",
-          // margin: "10px", 
-          display: "flex", flexDirection: "column", alignItems: "center", gap: "10px", position: "relative"
+          display: "flex", flexDirection: "column", alignItems: "center", position: "relative"
         }}>
 
           <HeroSection />
 
-          <div id="projects" style={{ scrollMarginTop: "100px" }}>
+          <div id="projects" className="section" style={{ scrollMarginTop: "100px" }}>
             <h2>Projects</h2>
             <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "10px" }}>
               <AnimatedButton settings={handsButton} />
@@ -110,17 +94,15 @@ const App = () => {
             </div>
           </div>
 
-          <div id="experience" style={{
-            scrollMarginTop: "100px", position: "relative",
-            // border: "1px solid black"
-            width: "100%"
+          <div id="experience" className="section" style={{
+            scrollMarginTop: "100px",
           }}>
-            <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "100%", zIndex: 100 }}></div>
+            <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "calc(100% + 10px)", zIndex: 100 }}></div>
 
             <h2>Work Experience</h2>
 
             <div className="job">
-              <div className="job-text" style={{ margin: "20px" }}>
+              <div className="job-text">
                 <div className="header">
                   <div className="title-and-date">
                     <h3 className="title">Full Stack Developer</h3>
@@ -148,13 +130,7 @@ const App = () => {
                 </ul>
               </div>
 
-              <div className="MultiTimeSeriesEditor-container" style={{
-                width: "800px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                margin: "20px"
-              }}>
+              <div className="MultiTimeSeriesEditor-container">
                 <MultiTimeSeriesEditor />
               </div>
             </div>
@@ -168,7 +144,7 @@ const App = () => {
 
       <div id="contact" style={{ scrollMarginTop: "100px" }}>
 
-        <footer style={{ padding: "20px", backgroundColor: "rgba(0, 0, 0, 0.7)", color: "white", textAlign: "center", fontSize: "14px" }}>
+        <footer style={{ padding: "20px", backgroundColor: "rgb(0, 0, 0)", color: "white", textAlign: "center", fontSize: "14px" }}>
           <p style={{ margin: "5px 0" }}>
             <a
               href="https://linkedin.com/in/jared-tweed"

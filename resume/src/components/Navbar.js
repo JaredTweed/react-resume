@@ -18,7 +18,7 @@ const Navbar = () => {
       }}
     >
       {/* Grainy Effect Overlay */}
-      <div
+      {/* <div
         style={{
           position: "absolute",
           top: 0,
@@ -52,7 +52,7 @@ const Navbar = () => {
             fill="white"
           />
         </svg>
-      </div>
+      </div> */}
 
 
       {/* Gooey + Shadow Filter */}
@@ -89,11 +89,24 @@ const Navbar = () => {
             floodColor="black"
             floodOpacity="0.6"
             in="gooey"
-            result="outerShadow"
+            result="darkShadow"
           />
 
+          {/* 3) Outer Shadow (drop shadow) */}
+          <feDropShadow
+            dx="-5"
+            dy="-5"
+            stdDeviation="4"
+            floodColor="white"
+            floodOpacity="0.6"
+            in="gooey"
+            result="lightShadow"
+          />
+
+          <feBlend in="darkShadow" in2="lightShadow" mode="normal" result="shadows" />
+
           {/* 6) Blend the SourceGraphic with the shadow on top */}
-          <feBlend in="SourceGraphic" in2="outerShadow" mode="normal" />
+          <feBlend in="SourceGraphic" in2="shadows" mode="normal" />
         </filter>
       </svg>
 

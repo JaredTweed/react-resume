@@ -205,9 +205,17 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
 
   return (
     <div style={{
-      position: "relative",
+      position: "absolute",
+      display: "block",
+      width: "100%",
+      height: "100%",
+      padding: "0",
       // border: "1px solid black"
     }}>
+      <div style={{
+        position: "absolute", bottom: "calc(100% - 15px)", color: "black", left: "calc(50% + 110px)"
+      }}>here</div>
+
       <button
         onClick={addDataKey}
         style={{
@@ -219,9 +227,10 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
           color: "white",
           border: "none",
           borderRadius: "10px",
-          padding: "5px 10px",
+          padding: 0,
           cursor: "pointer",
           width: "100px",
+          height: "28px",
           margin: "0 5px 5px 0"
         }}
       >
@@ -238,18 +247,18 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
           color: "white",
           border: "none",
           borderRadius: "10px",
-          padding: "5px 10px",
+          padding: 0,
           cursor: "pointer",
-          width: "100px"
+          width: "100px",
+          height: "28px",
         }}
       >
         -
       </button>
       <div
         style={{
-          height: "400px",
-          minWidth: "600px",
-          boxSizing: "border-box",
+          height: "calc(100% - 33px)",
+          // border: "1px solid black"
         }}
       >
         <MultiTimeSeries

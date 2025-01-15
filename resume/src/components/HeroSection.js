@@ -5,6 +5,7 @@ import selfie from "../assets/selfie-mirror-small.jpg";
 const HeroSection = () => {
   return (
     <section className="hero-section">
+      {/* <div style={{ position: "absolute", pointerEvents: "none", width: "100%", opacity: 0.22, height: "100%", filter: "url(#grainy)" }}></div> */}
       <div className="hero-content">
         {/* Text Content */}
         <div className="hero-text">
