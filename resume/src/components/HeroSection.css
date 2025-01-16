@@ -41,10 +41,20 @@
   line-height: 1.2;
 }
 
+.hero-text p {
+  font-size: 1rem;
+  margin: 0;
+  line-height: 1.2;
+}
+
 .hero-text h1 span {
   color: #007bff;
-  /* Accent color for title */
+  color: hsl(28, 60%, 60%);
+  /* filter: url(#grainy);
+  background: black; */
 }
+
+
 
 .hero-resume-link {
   display: inline-block;
@@ -87,13 +97,13 @@
   justify-content: center;
 }
 
-@media (max-width: 616px) {
+@media (max-width: 876px) {
   .hero-image {
     display: none;
   }
 
   .hero-section {
-    height: 300px;
+    height: 60vh;
   }
 }
 

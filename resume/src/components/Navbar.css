@@ -2,7 +2,7 @@
   display: inline-block;
   padding: 10px 20px;
   background: white;
-  /* background: #6e6e6e; */
+  background: #2e2e2e;
   border-radius: 50px;
   text-decoration: none;
   font-weight: bold;
@@ -17,14 +17,15 @@ header {
   top: 0;
   z-index: 1000;
   background: white;
-  /* background: linear-gradient(135deg, #3d3d3d, #5a5a5a, #7a7a7a); */
+  background: linear-gradient(135deg, #a33b3b, #5a5a5a, #7a7a7a);
+  background: linear-gradient(135deg, #000000, #202020, #3a3a3a);
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
 }
 
 header,
 header * {
   color: black;
-  /* color: white; */
+  color: white;
 }
 
 @media (max-width: 556px) {

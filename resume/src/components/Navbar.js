@@ -6,7 +6,7 @@ const Navbar = () => {
     // Event delegation for hover effects
     const handleMouseEnter = (e) => {
       if (e.target.classList.contains("nav-button")) {
-        e.target.style.transform = "scale(1.1)";
+        e.target.style.transform = "scale(1.2)";
       }
     };
 
@@ -140,9 +140,9 @@ const Navbar = () => {
             filter: "url(#gooey)", // apply the gooey filter + shadows
           }}
         >
-          <a href="#projects" className="nav-button">Projects</a>
           <a href="#experience" className="nav-button">Work Experience</a>
           <a href="#skills" className="nav-button">Skills</a>
+          <a href="#projects" className="nav-button">Projects</a>
           <a href="#contact" className="nav-button">Contact</a>
         </nav>
       </div>

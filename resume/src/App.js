@@ -18,6 +18,9 @@ import tetrisbookingIcon from "./assets/tetrisbooking.png";
 import tealBlackVideo from "./assets/teal-black.mp4"; // Import the video file
 import background from "./assets/texture1.jpg";
 
+import mouseImg1 from "./assets/MouseMirage-img1.png"
+import mouseImg2 from "./assets/MouseMirage-img2.png"
+
 const App = () => {
   const [showText, setShowText] = useState(false);
   const [showResume, setShowResume] = useState(false);
@@ -27,36 +30,28 @@ const App = () => {
     selectedIcon: handsIcon,
     text: "Hands<br>Detector",
     link: "https://jaredtweed.github.io/hands/",
+    shadow: "0px 0px 17px rgba(255, 255, 255, 0.4)"
   };
 
   const troublemakerButton = {
     selectedIcon: troublemakerIcon,
     text: "Troublemaker<br>Reporter",
     link: "https://jaredtweed.github.io/TroublemakerReporter/",
+    shadow: "0px 0px 17px rgba(255, 255, 255, 0.4)"
   };
 
   const ttqbcButton = {
     selectedIcon: ttqbcIcon,
     text: "Text To Question<br>Bank Converter",
     link: "https://jaredtweed.github.io/TextToQuestionBankOnline/",
+    shadow: "0px 0px 17px rgba(255, 255, 255, 0.4)"
   };
 
   const bookingsButton = {
     selectedIcon: tetrisbookingIcon,
     text: "Appointment<br>Booker",
     link: "https://jaredtweed.github.io/tetrisbooking/",
-  };
-
-
-  const handleTimeUpdate = () => {
-    const video = videoRef.current;
-    if (video && !showText && video.duration - video.currentTime <= 1.5) {
-      setShowText(true); // Trigger fade-in 1.5 seconds before the video ends
-    }
-
-    if (video && !showResume && video.duration - video.currentTime <= 0) {
-      setShowResume(true); // Trigger fade-in when the video ends
-    }
+    shadow: "0px 0px 17px rgba(255, 255, 255, 0.4)"
   };
 
   return (
@@ -72,9 +67,6 @@ const App = () => {
 
       <Navbar className="navbar" />
 
-
-
-
       <main>
 
         <div style={{
@@ -84,31 +76,10 @@ const App = () => {
 
           <HeroSection />
 
-          <div id="skills" className="section" >
-            <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "100%", zIndex: 100 }}></div>
-            <h2>Skills</h2>
-            <h3>Technical Skills</h3>
-            <h3>Transferable Soft Skills</h3>
-          </div>
-
-          <div id="projects" className="section">
-            <h2>Projects</h2>
-            <h3>Websites</h3>
-            <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "10px" }}>
-              <AnimatedButton settings={handsButton} />
-              <AnimatedButton settings={bookingsButton} />
-              <AnimatedButton settings={ttqbcButton} />
-              <AnimatedButton settings={troublemakerButton} />
-            </div>
-            <h3>Computer Vision</h3>
-            <h3>Other Projects</h3>
-          </div>
 
           <div id="experience" className="section">
             <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "calc(100% + 10px)", zIndex: 100 }}></div>
-
             <h2>Work Experience</h2>
-
             <div className="job">
               <div className="job-text">
                 <div className="header">
@@ -123,18 +94,10 @@ const App = () => {
                 </div>
 
                 <ul>
-                  <li>
-                    <strong>Soft Skills:</strong> Engaged in in-person product improvement discussions with clients and worked as the sole developer for the business.
-                  </li>
-                  <li>
-                    <strong>Data Processing:</strong> Parsed JSON, XML, and CSV data using Python and utilized multithreading to optimize data curation speeds.
-                  </li>
-                  <li>
-                    <strong>Front End:</strong> Built custom widgets for ThingsBoard, implemented features using HTML, CSS, and JavaScript, optimized the ECharts.js charting library through multithreading, and provided UX design recommendations.
-                  </li>
-                  <li>
-                    <strong>Back End:</strong> Developed backend solutions using Node-RED, researched optimal APIs through documentation reviews, implemented email subscriptions using SendGrid and AWS Lambda/EC2, integrated MongoDB with Node.js, and worked with MQTT protocols.
-                  </li>
+                  <li><strong>Soft Skills:</strong> Engaged in in-person product improvement discussions with clients and worked as the sole developer for the business.</li>
+                  <li><strong>Data Processing:</strong> Parsed JSON, XML, and CSV data using Python and utilized multithreading to optimize data curation speeds.</li>
+                  <li><strong>Front End:</strong> Built custom widgets for ThingsBoard, implemented features using HTML, CSS, and JavaScript, optimized the ECharts.js charting library through multithreading, and provided UX design recommendations.</li>
+                  <li><strong>Back End:</strong> Developed backend solutions using Node-RED, researched optimal APIs through documentation reviews, implemented email subscriptions using SendGrid and AWS Lambda/EC2, integrated MongoDB with Node.js, and worked with MQTT protocols.</li>
                 </ul>
               </div>
 
@@ -142,11 +105,62 @@ const App = () => {
                 <MultiTimeSeriesEditor />
               </div>
             </div>
-
           </div>
 
 
-          {/* </div> */}
+
+
+
+          <div id="projects" className="section">
+            <h2>Projects</h2>
+            <h3>Websites</h3>
+            <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "10px" }}>
+              <AnimatedButton settings={handsButton} />
+              <AnimatedButton settings={bookingsButton} />
+              <AnimatedButton settings={ttqbcButton} />
+              <AnimatedButton settings={troublemakerButton} />
+            </div>
+            {/* <h3>Computer Vision</h3> */}
+            <h3>Other Projects</h3>
+            <div className="job project">
+              <div className="job-text project-text">
+                <div className="header">
+                  <div className="title-and-date">
+                    <h3 className="title">Java with Maven Game</h3>
+                    <p className="date"><strong>Feb - Apr 2022</strong></p>
+                  </div>
+                  <div className="project-links">
+                    <p className="company">More info: <a href="https://github.com/JaredTweed/MouseMirageGame">https://github.com/JaredTweed/MouseMirageGame</a></p>
+                    {/* <p className="company"><a href="https://raw.githubusercontent.com/JaredTweed/MouseMirageGame/main/Mouse-Mirage.exe">Windows Download</a></p> */}
+                  </div>
+                </div>
+                <ul>
+                  <li>Led Mouse Mirage's Java development using Apache Maven and the Swing Framework.</li>
+                  <li>Designed mechanics, including level progression, sound management, and UI navigation.</li>
+                </ul>
+              </div>
+              <div className="project-images"><img src={mouseImg2} height="100%" /><img src={mouseImg1} height="100%" /></div>
+            </div>
+          </div>
+
+          <div id="skills" className="section" >
+            <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "100%", zIndex: 100 }}></div>
+            <h2>Skills</h2>
+            <h3>Technical Skills</h3>
+            <div className="skill-block">
+              <p><strong>Languages:</strong> Java, MATLAB, Python, C/C++, SQL (Postgres), HTML/CSS, Typescript, JavaScript, R, LaTeX</p>
+              <p><strong>Frameworks:</strong> Angular, React, Node.js (Express.js), Java Swing, Flask</p>
+              <p><strong>Developer Tools:</strong> Git, Google Cloud Platform, AWS Lambda & EC2, Visual Studio, Unity3D, Apache Maven</p>
+              <p><strong>Libraries:</strong> NumPy, OpenCV, Detectron2, PyTorch, Regex, Tkinter, Websocket.io, MongoDB, Postman</p>
+            </div>
+            <h3>Transferable Soft Skills</h3>
+            <div className="skill-block">
+              <p>Displayed a strong work ethic when on Yukon diamond drilling rigs (up to 95 hour workweeks).</p>
+              <p>Devoted years of volunteering and working with elementary school children.</p>
+              <p>Excelled in culturally diverse workplaces.</p>
+            </div>
+          </div>
+
         </div >
       </main >
 

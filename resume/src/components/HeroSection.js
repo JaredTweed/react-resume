@@ -14,6 +14,11 @@ const HeroSection = () => {
             <br />
             <span>Full-Stack Developer</span>
           </h1>
+          <p>
+            BSc Computer Science, Mathematics Minor
+            <br />Simon Fraser University, Burnaby, BC
+            {/* <br />Sep 2020 - Apr 2025 */}
+          </p>
           <a
             href="https://raw.githubusercontent.com/JaredTweed/jaredtweed/main/JaredTweed-Resume.pdf"
             target="_blank"
