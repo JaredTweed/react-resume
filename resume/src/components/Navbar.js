@@ -141,8 +141,8 @@ const Navbar = () => {
           }}
         >
           <a href="#experience" className="nav-button">Work Experience</a>
-          <a href="#skills" className="nav-button">Skills</a>
           <a href="#projects" className="nav-button">Projects</a>
+          <a href="#skills" className="nav-button">Skills</a>
           <a href="#contact" className="nav-button">Contact</a>
         </nav>
       </div>

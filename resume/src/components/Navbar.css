@@ -2,7 +2,7 @@
   display: inline-block;
   padding: 10px 20px;
   background: white;
-  background: #2e2e2e;
+  background: var(--neurmorphic-right-color);
   border-radius: 50px;
   text-decoration: none;
   font-weight: bold;
@@ -16,19 +16,19 @@ header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgb(238, 238, 238);
-  background: linear-gradient(135deg, #a33b3b, #5a5a5a, #7a7a7a);
-  background: linear-gradient(135deg, #000000, #202020, #3a3a3a);
+  /* background: rgb(238, 238, 238);
+  background: linear-gradient(135deg, #a33b3b, #5a5a5a, #7a7a7a); */
+  background: var(--background-color);
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);
 }
 
 header,
 header * {
   color: black;
-  color: white;
+  color: var(--text-color);
 }
 
-@media (max-width: 556px) {
+@media (max-width: 660px) {
   header {
     display: none;
   }
