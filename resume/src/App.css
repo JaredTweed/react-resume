@@ -162,8 +162,10 @@ h3 {
 }
 
 .project-text {
+  width: fill;
   min-width: none;
   max-width: 800px;
+  margin: 0 20px;
 }
 
 .project-images {

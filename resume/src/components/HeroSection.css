@@ -132,4 +132,5 @@
   font-family: 'Poppins', sans-serif;
   box-shadow: var(--neumorphic-shadow);
   border: none;
+  border-radius: 5px;
 }
