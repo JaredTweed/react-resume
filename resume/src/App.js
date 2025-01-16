@@ -70,7 +70,7 @@ const App = () => {
       }}
     >
 
-      <Navbar />
+      <Navbar className="navbar" />
 
 
 
@@ -84,19 +84,27 @@ const App = () => {
 
           <HeroSection />
 
-          <div id="projects" className="section" style={{ scrollMarginTop: "100px" }}>
+          <div id="skills" className="section" >
+            <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "100%", zIndex: 100 }}></div>
+            <h2>Skills</h2>
+            <h3>Technical Skills</h3>
+            <h3>Transferable Soft Skills</h3>
+          </div>
+
+          <div id="projects" className="section">
             <h2>Projects</h2>
+            <h3>Websites</h3>
             <div style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "10px" }}>
               <AnimatedButton settings={handsButton} />
               <AnimatedButton settings={bookingsButton} />
               <AnimatedButton settings={ttqbcButton} />
               <AnimatedButton settings={troublemakerButton} />
             </div>
+            <h3>Computer Vision</h3>
+            <h3>Other Projects</h3>
           </div>
 
-          <div id="experience" className="section" style={{
-            scrollMarginTop: "100px",
-          }}>
+          <div id="experience" className="section">
             <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "calc(100% + 10px)", zIndex: 100 }}></div>
 
             <h2>Work Experience</h2>
@@ -142,7 +150,7 @@ const App = () => {
         </div >
       </main >
 
-      <div id="contact" style={{ scrollMarginTop: "100px" }}>
+      <div id="contact" className="section" style={{ padding: "0px" }}>
 
         <footer style={{ padding: "20px", backgroundColor: "rgb(0, 0, 0)", color: "white", textAlign: "center", fontSize: "14px" }}>
           <p style={{ margin: "5px 0" }}>

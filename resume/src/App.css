@@ -4,11 +4,21 @@ h2 {
   line-height: 2.2rem;
   margin: 8px 0 6px 0;
   /* border: 1px solid black; */
-
 }
 
-#experience {
+h3 {
+  color: black;
+  margin: 0;
+}
+
+#experience,
+#skills {
   background-color: #DAA06D;
+}
+
+#projects {
+  /* background: linear-gradient(135deg, #e0e0e0, #f0f0f0, #ffffff); */
+  background: linear-gradient(135deg, #3d3d3d, #5a5a5a, #7a7a7a);
 }
 
 .job {
@@ -34,6 +44,7 @@ h2 {
   gap: 10px;
   width: 100%;
   padding-bottom: 10px;
+  scroll-margin-top: 95px;
 }
 
 

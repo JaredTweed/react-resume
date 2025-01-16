@@ -17,6 +17,9 @@
   font-family: "Poppins", sans-serif;
 }
 
+
+
+
 /* Hero Content */
 .hero-content {
   display: flex;
@@ -25,7 +28,6 @@
   max-width: 900px;
   width: 100%;
   padding: 20px;
-  gap: 50px;
 }
 
 /* Text Section */
@@ -84,6 +86,17 @@
   display: flex;
   justify-content: center;
 }
+
+@media (max-width: 616px) {
+  .hero-image {
+    display: none;
+  }
+
+  .hero-section {
+    height: 300px;
+  }
+}
+
 
 .hero-image img {
   max-width: 300px;

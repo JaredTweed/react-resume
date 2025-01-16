@@ -25,7 +25,7 @@ root.render(
         <filter id="grainy" x="0" y="0" width="100%" height="100%">
           <feTurbulence
             type="turbulence"
-            baseFrequency="0.9" // Adjust frequency for desired grain size
+            baseFrequency="0.5" // Adjust frequency for desired grain size
             numOctaves="18"
           // seed="4"
           // result="noise"

@@ -1,22 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
+import "./Navbar.css";
 
 const Navbar = () => {
+  useEffect(() => {
+    // Event delegation for hover effects
+    const handleMouseEnter = (e) => {
+      if (e.target.classList.contains("nav-button")) {
+        e.target.style.transform = "scale(1.1)";
+      }
+    };
+
+    const handleMouseLeave = (e) => {
+      if (e.target.classList.contains("nav-button")) {
+        e.target.style.transform = "scale(1)";
+      }
+    };
+
+    // Attach event listeners to the parent
+    const navContainer = document.querySelector("nav");
+    navContainer.addEventListener("mouseenter", handleMouseEnter, true);
+    navContainer.addEventListener("mouseleave", handleMouseLeave, true);
+
+    // Cleanup
+    return () => {
+      navContainer.removeEventListener("mouseenter", handleMouseEnter, true);
+      navContainer.removeEventListener("mouseleave", handleMouseLeave, true);
+    };
+  }, []);
+
+
   return (
 
-
-
-
-    <header
-      style={{
-        padding: "20px",
-        margin: "0",
-        position: "sticky",
-        top: "0",
-        zIndex: "1000",
-        backgroundColor: "white",
-        boxShadow: "0px 5px 10px rgba(0,0,0,0.5)",
-      }}
-    >
+    <header>
       {/* Grainy Effect Overlay */}
       {/* <div
         style={{
@@ -98,7 +113,7 @@ const Navbar = () => {
             dy="-5"
             stdDeviation="4"
             floodColor="white"
-            floodOpacity="0.6"
+            floodOpacity="0.2"
             in="gooey"
             result="lightShadow"
           />
@@ -111,7 +126,9 @@ const Navbar = () => {
       </svg>
 
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div style={{ color: "black", fontWeight: "bold", fontSize: "25px", lineHeight: "25px" }}>Jared<br />Tweed</div>
+        <a href="#" style={{ textDecoration: "none", fontWeight: "bold", fontSize: "25px", lineHeight: "25px" }}>
+          Jared<br />Tweed
+        </a>
 
         {/* Navbar Links */}
         <nav
@@ -123,58 +140,10 @@ const Navbar = () => {
             filter: "url(#gooey)", // apply the gooey filter + shadows
           }}
         >
-          <a
-            href="#projects"
-            style={{
-              display: "inline-block",
-              padding: "10px 20px",
-              // Option A) slightly transparent:
-              backgroundColor: "white",
-              borderRadius: "50px",
-              textDecoration: "none",
-              color: "black",
-              fontWeight: "bold",
-              transition: "transform 0.3s ease",
-            }}
-            onMouseEnter={(e) => (e.target.style.transform = "scale(1.1)")}
-            onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
-          >
-            Projects
-          </a>
-          <a
-            href="#experience"
-            style={{
-              display: "inline-block",
-              padding: "10px 20px",
-              backgroundColor: "white",
-              borderRadius: "50px",
-              textDecoration: "none",
-              color: "black",
-              fontWeight: "bold",
-              transition: "transform 0.3s ease",
-            }}
-            onMouseEnter={(e) => (e.target.style.transform = "scale(1.1)")}
-            onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
-          >
-            Work Experience
-          </a>
-          <a
-            href="#contact"
-            style={{
-              display: "inline-block",
-              padding: "10px 20px",
-              backgroundColor: "white",
-              borderRadius: "50px",
-              textDecoration: "none",
-              color: "black",
-              fontWeight: "bold",
-              transition: "transform 0.3s ease",
-            }}
-            onMouseEnter={(e) => (e.target.style.transform = "scale(1.1)")}
-            onMouseLeave={(e) => (e.target.style.transform = "scale(1)")}
-          >
-            Contact
-          </a>
+          <a href="#projects" className="nav-button">Projects</a>
+          <a href="#experience" className="nav-button">Work Experience</a>
+          <a href="#skills" className="nav-button">Skills</a>
+          <a href="#contact" className="nav-button">Contact</a>
         </nav>
       </div>
     </header>
