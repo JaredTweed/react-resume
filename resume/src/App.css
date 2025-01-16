@@ -51,7 +51,7 @@ h2 {
 .job-text .title-and-date {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   /* Aligns title and date vertically at the top */
 }
 

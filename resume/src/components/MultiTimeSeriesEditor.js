@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import MultiTimeSeries from "./MultiTimeSeries";
+import leftArrow from "../assets/arrow-left.gif";
 
 const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
   const [data, setData] = useState([
@@ -165,7 +166,7 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
         units: measurement.unit,
         decimals: measurement.decimals,
         color: Math.random() < 0.3
-          ? `hsl(${Math.floor(Math.random() * 360)}, 100%, ${Math.floor(40 + Math.random() * 8)}%)`
+          ? `hsl(${Math.floor(Math.random() * 360)}, 100%, ${Math.floor(30 + Math.random() * 8)}%)`
           : null,
         settings: {
           isBarGraph: barGraph,
@@ -203,6 +204,27 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
     }
   };
 
+
+
+
+  const [gifSrc, setGifSrc] = useState("");
+  const [isFading, setIsFading] = useState(false);
+  useEffect(() => {
+    const playGif = () => {
+      setIsFading(false);
+      setGifSrc(`${leftArrow}?timestamp=${Date.now()}`);
+    };
+    playGif();
+    const interval = setInterval(() => {
+      setIsFading(true); // Trigger fade-out before restarting the GIF
+      setTimeout(() => {
+        playGif();
+      }, 500); // Match this to the fade-out duration in CSS
+    }, 5000); // restart frequency
+    return () => clearInterval(interval);
+  }, []);
+
+
   return (
     <div style={{
       position: "absolute",
@@ -213,8 +235,30 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
       // border: "1px solid black"
     }}>
       <div style={{
-        position: "absolute", bottom: "calc(100% - 15px)", color: "black", left: "calc(50% + 110px)"
-      }}>here</div>
+        position: "absolute",
+        bottom: "calc(100% - 28px)",
+        color: "black",
+        left: "calc(50% + 110px)",
+        display: "flex",
+        alignItems: "center"
+      }}>
+        <img src={gifSrc} className={isFading ? "fade-out" : ""}
+          width="100" height="40" alt="Example GIF"
+          style={{
+            transition: "opacity 0.5s ease-in-out", // Smooth fade-out
+            opacity: isFading ? 0 : 1, // Control visibility
+          }} />
+        <div style={{
+          margin: "0px 0px 14px -10px",
+          transform: "rotate(15deg)",
+          fontSize: "16px",
+          fontWeight: "bold",
+          color: "black"
+        }}>
+          try it out
+        </div>
+      </div>
+
 
       <button
         onClick={addDataKey}
@@ -274,15 +318,3 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
 };
 
 export default MultiTimeSeriesEditor;
-
-
-
-
-
-
-
-
-
-
-
-

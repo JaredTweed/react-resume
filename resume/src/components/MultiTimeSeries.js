@@ -259,6 +259,7 @@ export default function MultiTimeSeries({
     tempContainer.style.position = "absolute";
     tempContainer.style.visibility = "hidden";
     tempContainer.style.whiteSpace = "nowrap";
+
     document.body.appendChild(tempContainer);
 
     const widths = dataKeys.map((dk, i) => {
@@ -280,7 +281,7 @@ export default function MultiTimeSeries({
     if (newMaxWidth !== maxLegendWidth) {
       setMaxLegendWidth(newMaxWidth);
     }
-  }, [chartDataList, dataKeys, settings, showAllData, uniqueId]);
+  }, [chartDataList, data, dataKeys, settings, showAllData, uniqueId]);
 
   /**
    * 5) Synchronize tooltips if needed (and if we have multiple charts).
@@ -567,7 +568,7 @@ function buildValueBoxHTML(dk, keyData, settings, showAll) {
   if (!showAll) {
     // Show only label + latest
     return `
-      <div style="padding: 5px;">
+      <div style="padding: 5px; font-family: 'Poppins', san-serif;">
         <div style="font-weight: bold; white-space: nowrap; overflow: hidden;">
           ${label}
         </div>
@@ -590,7 +591,7 @@ function buildValueBoxHTML(dk, keyData, settings, showAll) {
     const sumHTML = wantSum ? row('Sum', formatNumberWithCommas(sumValue) + units) : '';
 
     return `
-      <div style="padding: 5px;">
+      <div style="padding: 5px; font-family: 'Poppins', san-serif;">
         <strong style="font-weight: 800; display: block; white-space: nowrap; overflow: hidden;">
           ${label}
         </strong>
