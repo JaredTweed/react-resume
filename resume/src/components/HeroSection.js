@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./HeroSection.css"; // For styling
 import selfie from "../assets/selfie-mirror-small.jpg";
 
+
 const HeroSection = () => {
   // State for managing the current theme
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -39,7 +40,8 @@ const HeroSection = () => {
           </p>
           <a
             href="https://raw.githubusercontent.com/JaredTweed/jaredtweed/main/JaredTweed-Resume.pdf"
-            target="_blank"
+            // href="/resume.pdf"
+            target="_self"
             rel="noopener noreferrer"
             className="hero-resume-link"
           >
