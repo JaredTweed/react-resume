@@ -16,7 +16,7 @@ header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: white;
+  background: rgb(238, 238, 238);
   background: linear-gradient(135deg, #a33b3b, #5a5a5a, #7a7a7a);
   background: linear-gradient(135deg, #000000, #202020, #3a3a3a);
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.5);

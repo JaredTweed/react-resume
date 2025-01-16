@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./HeroSection.css"; // For styling
 import selfie from "../assets/selfie-mirror-small.jpg";
 
 const HeroSection = () => {
+  // State for managing the current theme
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
+
+  // Apply the theme when it changes
+  useEffect(() => {
+    document.body.setAttribute("data-theme", theme);
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  // Toggle the theme
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  };
+
   return (
     <section className="hero-section">
       {/* <div style={{ position: "absolute", pointerEvents: "none", width: "100%", opacity: 0.22, height: "100%", filter: "url(#grainy)" }}></div> */}
+      <button className="toggle-button" onClick={toggleTheme}>
+        {theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+      </button>
+
       <div className="hero-content">
         {/* Text Content */}
         <div className="hero-text">

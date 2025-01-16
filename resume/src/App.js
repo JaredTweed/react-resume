@@ -30,28 +30,36 @@ const App = () => {
     selectedIcon: handsIcon,
     text: "Hands<br>Detector",
     link: "https://jaredtweed.github.io/hands/",
-    shadow: "0px 0px 17px rgba(255, 255, 255, 0.4)"
+    shadow: "var(--neumorphic-shadow)",
+    color: "transparent",
+    textColor: "var(--text-color)"
   };
 
   const troublemakerButton = {
     selectedIcon: troublemakerIcon,
     text: "Troublemaker<br>Reporter",
     link: "https://jaredtweed.github.io/TroublemakerReporter/",
-    shadow: "0px 0px 17px rgba(255, 255, 255, 0.4)"
+    shadow: "var(--neumorphic-shadow)",
+    color: "transparent",
+    textColor: "var(--text-color)"
   };
 
   const ttqbcButton = {
     selectedIcon: ttqbcIcon,
     text: "Text To Question<br>Bank Converter",
     link: "https://jaredtweed.github.io/TextToQuestionBankOnline/",
-    shadow: "0px 0px 17px rgba(255, 255, 255, 0.4)"
+    shadow: "var(--neumorphic-shadow)",
+    color: "transparent",
+    textColor: "var(--text-color)"
   };
 
   const bookingsButton = {
     selectedIcon: tetrisbookingIcon,
     text: "Appointment<br>Booker",
     link: "https://jaredtweed.github.io/tetrisbooking/",
-    shadow: "0px 0px 17px rgba(255, 255, 255, 0.4)"
+    shadow: "var(--neumorphic-shadow)",
+    color: "transparent",
+    textColor: "var(--text-color)"
   };
 
   return (
@@ -78,7 +86,7 @@ const App = () => {
 
 
           <div id="experience" className="section">
-            <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "calc(100% + 10px)", zIndex: 100 }}></div>
+            <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "100%", zIndex: 100 }}></div>
             <h2>Work Experience</h2>
             <div className="job">
               <div className="job-text">
@@ -122,7 +130,7 @@ const App = () => {
             </div>
             {/* <h3>Computer Vision</h3> */}
             <h3>Other Projects</h3>
-            <div className="job project">
+            <div className="job project neumorphic">
               <div className="job-text project-text">
                 <div className="header">
                   <div className="title-and-date">

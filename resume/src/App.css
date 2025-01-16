@@ -1,3 +1,23 @@
+:root {
+  --background-color: linear-gradient(135deg, #e0e0e0, #f0f0f0, #ffffff);
+  --neurmorphic-right-color: none;
+  --neurmorphic-left-color: none;
+  --shadow: none;
+  --neumorphic-shadow: -5px -5px 9px rgba(255, 255, 255, 0.87), 5px 5px 9px rgba(0, 0, 0, 0.3);
+  --inset-neumorphic-shadow: inset -5px -5px 9px rgba(255, 255, 255, 0.87), inset 5px 5px 9px rgba(0, 0, 0, 0.3);
+  --text-color: #333;
+}
+
+[data-theme="dark"] {
+  --background-color: linear-gradient(135deg, #080808, #202020, #3a3a3a);
+  --neurmorphic-right-color: #2e2e2e;
+  --neurmorphic-left-color: #2e2e2e;
+  --shadow: 0px 0px 17px rgba(255, 255, 255, 0.4);
+  --neumorphic-shadow: -5px -5px 9px rgba(255, 255, 255, 0.178), 5px 5px 9px rgb(0, 0, 0);
+  --inset-neumorphic-shadow: inset -5px -5px 9px rgba(255, 255, 255, 0.178), inset 5px 5px 9px rgb(0, 0, 0);
+  --text-color: white;
+}
+
 h2 {
   color: black;
   font-size: 2rem;
@@ -21,11 +41,12 @@ h3 {
   background: linear-gradient(135deg, #3d3d3d, #5a5a5a, #7a7a7a);
   background: black;
   background: linear-gradient(135deg, #000000, #202020, #3a3a3a);
-
+  background: var(--background-color);
+  align-items: center;
 }
 
 #projects * {
-  color: white;
+  color: var(--text-color);
 }
 
 
@@ -154,9 +175,11 @@ h3 {
 }
 
 .project-images img {
-  width: calc(50% - 5px);
+  width: calc(50% - 7px);
   height: auto;
   flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid black;
 
 }
 
@@ -177,4 +200,14 @@ h3 {
     max-width: 800px;
     min-height: 500px;
   }
+}
+
+.neumorphic {
+  background: transparent;
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  box-shadow: var(--neumorphic-shadow);
+  border: none;
+  border-radius: 18px;
+  padding: 10px;
 }
