@@ -23,6 +23,8 @@ import mouseImg2 from "./assets/MouseMirage-img2.png"
 import panoramaImg1 from "./assets/Panorama-img1.png"
 import panoramaImg2 from "./assets/Panorama-img2.png"
 
+import linkIcon from "./assets/external-link.png"
+
 const App = () => {
   const [showText, setShowText] = useState(false);
   const [showResume, setShowResume] = useState(false);
@@ -132,7 +134,8 @@ const App = () => {
             </div>
             {/* <h3>Computer Vision</h3> */}
             <h3>Other Projects</h3>
-            <div className="job project neumorphic">
+
+            <div className="project neumorphic">
               <div className="job-text project-text">
                 <div className="header">
                   <div className="title-and-date">
@@ -141,13 +144,15 @@ const App = () => {
                   </div>
                   <div className="project-links">
                     <p className="company">MATLAB, Homographies, Harris Corner Detection, RANSAC</p>
-                    <p className="company">More info: <a href="https://github.com/JaredTweed/PanoramaMaker">https://github.com/JaredTweed/PanoramaMaker</a></p>
+                    {/* <p className="company">More info: <a href="https://github.com/JaredTweed/PanoramaMaker">https://github.com/JaredTweed/PanoramaMaker</a></p> */}
+                    <p className="company"><a href="https://github.com/JaredTweed/PanoramaMaker">More Info <img src={linkIcon} alt="Link Icon" className="linkIcon" /></a></p>
                   </div>
                 </div>
               </div>
               <div className="project-images"><img src={panoramaImg1} height="100%" /><img src={panoramaImg2} height="100%" /></div>
             </div>
-            <div className="job project neumorphic">
+
+            <div className="project neumorphic">
               <div className="job-text project-text">
                 <div className="header">
                   <div className="title-and-date">
@@ -155,8 +160,7 @@ const App = () => {
                     <p className="date"><strong>Feb - Apr 2022</strong></p>
                   </div>
                   <div className="project-links">
-                    <p className="company">More info: <a href="https://github.com/JaredTweed/MouseMirageGame">https://github.com/JaredTweed/MouseMirageGame</a></p>
-                    {/* <p className="company"><a href="https://raw.githubusercontent.com/JaredTweed/MouseMirageGame/main/Mouse-Mirage.exe">Windows Download</a></p> */}
+                    <p className="company"><a href="https://github.com/JaredTweed/MouseMirageGame">More Info <img src={linkIcon} alt="Link Icon" className="linkIcon" /></a></p>
                   </div>
                 </div>
                 <ul>
@@ -166,6 +170,7 @@ const App = () => {
               </div>
               <div className="project-images"><img src={mouseImg2} height="100%" /><img src={mouseImg1} height="100%" /></div>
             </div>
+
           </div>
 
           <div id="skills" className="section" >

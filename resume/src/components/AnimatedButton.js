@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const AnimatedButton = ({ settings, onAction }) => {
   const containerRef = useRef(null);
+  const lastInputMethodRef = useRef("mouse");
   const [uniqueId] = useState(uuidv4());
   const [hoverState, setHoverState] = useState(false);
   const [activeState, setActiveState] = useState(false);
@@ -144,12 +145,8 @@ const AnimatedButton = ({ settings, onAction }) => {
 
     // setInterval(cacheDimensions, 1000);
 
-    const handleMouseOver = () => {
-      mouseover = true;
-      setHoverState(true);
+    function showText() {
       textOverlay.style.opacity = "1";
-
-
       if (fs.horizontalAnim) {
         icon.style.transform = `translate(-${preCalculatedNum1}px, -50%)`;
         textOverlay.style.transform = `translate(${preCalculatedNum2}px, -50%)`;
@@ -157,6 +154,13 @@ const AnimatedButton = ({ settings, onAction }) => {
         icon.style.transform = `translate(-50%, -${preCalculatedNum3}px)`;
         textOverlay.style.transform = `translate(-50%, ${preCalculatedNum4}px)`;
       }
+    }
+
+    const handleMouseOver = () => {
+      // console.log("mouseoverrrrr");
+      mouseover = true;
+      setHoverState(true);
+      showText();
 
       icon.style.color = fs.iconHoverColor;
       container.style.border = fs.hoverBorder;
@@ -197,33 +201,39 @@ const AnimatedButton = ({ settings, onAction }) => {
       container.style.boxShadow = fs.hoverShadow;
     };
 
-    // const handleClick = (event) => {
-    //   event.preventDefault();
-    //   if (fs.link) {
-    //     // window.location.assign(fs.link);
-    //     // window.location.href = fs.link;
-    //     window.open(fs.link, "_blank"); // Open link in a new tab
-    //   }
-    //   if (onAction) {
-    //     onAction(event);
-    //   }
-    // };
+
+    const handleMouseMove = () => {
+      if (lastInputMethodRef.current !== "mouse") {
+        lastInputMethodRef.current = "mouse"; // Update the ref immediately
+        handleMouseOut();
+      }
+    };
+
+    const handleTouchStart = () => {
+      if (lastInputMethodRef.current !== "touch") {
+        lastInputMethodRef.current = "touch"; // Update the ref immediately
+        handleMouseOver();
+      }
+    };
 
     container.addEventListener("mouseover", handleMouseOver);
     container.addEventListener("mouseout", handleMouseOut);
     container.addEventListener("mousedown", handleMouseDown);
     container.addEventListener("mouseup", handleMouseUp);
-    // container.addEventListener("click", handleClick);
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("touchstart", handleTouchStart);
 
     handleMouseOut()
     cacheDimensions();
+
 
     return () => {
       container.removeEventListener("mouseover", handleMouseOver);
       container.removeEventListener("mouseout", handleMouseOut);
       container.removeEventListener("mousedown", handleMouseDown);
       container.removeEventListener("mouseup", handleMouseUp);
-      // container.removeEventListener("click", handleClick);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchstart", handleTouchStart);
     };
   }, [settings, onAction, uniqueId]);
 

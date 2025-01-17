@@ -1,3 +1,4 @@
+/* Theme */
 :root {
   --background-color: linear-gradient(135deg, #e0e0e0, #f0f0f0, #ffffff);
   --neurmorphic-right-color: white;
@@ -18,29 +19,36 @@
   --text-color: white;
 }
 
+
+
+/* Heading Defaults */
 h2 {
-  color: black;
   font-size: 2rem;
   line-height: 2.2rem;
   margin: 8px 0 6px 0;
-  /* border: 1px solid black; */
 }
 
 h3 {
-  color: black;
   margin: 0;
 }
 
+
+
+/* Style 1 */
 #experience,
 #skills {
   background-color: #DAA06D;
 }
 
+#skills *,
+#experience * {
+  color: black;
+}
+
+
+
+/* Style 2 */
 #projects {
-  /* background: linear-gradient(135deg, #e0e0e0, #f0f0f0, #ffffff); */
-  background: linear-gradient(135deg, #3d3d3d, #5a5a5a, #7a7a7a);
-  background: black;
-  background: linear-gradient(135deg, #000000, #202020, #3a3a3a);
   background: var(--background-color);
   align-items: center;
 }
@@ -50,38 +58,10 @@ h3 {
 }
 
 
-#skills {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
-#skills * {
-  color: black;
-}
 
-#skills p {
-  text-align: left;
-  margin: 0;
-  padding: 0 5px;
-}
 
-/* .skill-block {
-  border: 1px solid black;
-  width: 800px;
-} */
 
-.job {
-  display: flex;
-  flex-direction: row;
-
-  align-items: stretch;
-  justify-content: center;
-  gap: 40px;
-  padding: 0 30px 20px 30px;
-  /* border: 1px solid black; */
-
-}
 
 /* .job>* {
   border: 1px solid black;
@@ -100,24 +80,45 @@ h3 {
 
 
 
+/* Skills Section */
+#skills {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
+#skills p {
+  text-align: left;
+  margin: 0;
+  padding: 0 5px;
+}
+
+
+
+/* Job Format */
+.job {
+  display: flex;
+  flex-direction: row;
+
+  align-items: stretch;
+  justify-content: center;
+  gap: 40px;
+  padding: 0 30px 20px 30px;
+}
 
 .job-text .header {
   display: flex;
   flex-direction: column;
   gap: 0px;
-  /* Adds spacing between rows */
 }
 
 .job-text .title-and-date {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* Aligns title and date vertically at the top */
 }
 
 .job-text .header * {
-  /* border: 1px solid black; */
   margin: 0;
 }
 
@@ -126,8 +127,6 @@ h3 {
   justify-content: space-between;
   font-style: italic;
 }
-
-
 
 .job-text .date,
 .job-text .location {
@@ -141,7 +140,6 @@ h3 {
 
 .job-text {
   text-align: left;
-  color: black;
   max-width: 500px;
   flex: 1;
 }
@@ -154,11 +152,15 @@ h3 {
   position: relative;
 }
 
+
+
+/* Project */
 .project {
   flex-direction: column;
   align-items: center;
-  padding: 0 5px 5px 5px;
   gap: 10px;
+  padding: 8px;
+  margin: 0 10px
 }
 
 .project-text {
@@ -168,13 +170,26 @@ h3 {
   margin: 0 20px;
 }
 
+.company a {
+  text-decoration: none;
+}
+
+.linkIcon {
+  width: 11px;
+  height: 11px;
+  margin: 0 0 0px 1p;
+}
+
 .project-images {
   display: flex;
+  position: relative;
   justify-content: space-between;
   align-items: center;
   flex-wrap: nowrap;
   gap: 10px;
   max-width: 800px;
+
+  min-width: none;
 }
 
 .project-images img {
@@ -184,6 +199,7 @@ h3 {
   border-radius: 10px;
   border: 1px solid black;
 
+  min-width: none;
 }
 
 @media screen and (max-width: 1180px) {
@@ -212,5 +228,5 @@ h3 {
   box-shadow: var(--neumorphic-shadow);
   border: none;
   border-radius: 18px;
-  padding: 10px;
+  /* padding: 10px; */
 }
