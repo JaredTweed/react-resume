@@ -180,6 +180,13 @@ h3 {
   margin: 0 0 0px 1p;
 }
 
+@media (prefers-color-scheme: dark) {
+  .linkIcon {
+    filter: invert(1);
+  }
+}
+
+
 .project-images {
   display: flex;
   position: relative;
