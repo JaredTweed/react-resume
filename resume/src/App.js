@@ -176,7 +176,7 @@ const App = () => {
           </div>
 
           <div id="skills" className="section" >
-            <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "100%", zIndex: 100 }}></div>
+            <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "100%", zIndex: 50 }}></div>
             <h2>Skills</h2>
             <h3>Technical Skills</h3>
             <div className="skill-block">
