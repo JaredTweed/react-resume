@@ -197,20 +197,23 @@ const AnimatedButton = ({ settings, onAction }) => {
       container.style.boxShadow = fs.hoverShadow;
     };
 
-    const handleClick = (event) => {
-      if (fs.link) {
-        window.open(fs.link, "_blank"); // Open link in a new tab
-      }
-      if (onAction) {
-        onAction(event);
-      }
-    };
+    // const handleClick = (event) => {
+    //   event.preventDefault();
+    //   if (fs.link) {
+    //     // window.location.assign(fs.link);
+    //     // window.location.href = fs.link;
+    //     window.open(fs.link, "_blank"); // Open link in a new tab
+    //   }
+    //   if (onAction) {
+    //     onAction(event);
+    //   }
+    // };
 
     container.addEventListener("mouseover", handleMouseOver);
     container.addEventListener("mouseout", handleMouseOut);
     container.addEventListener("mousedown", handleMouseDown);
     container.addEventListener("mouseup", handleMouseUp);
-    container.addEventListener("click", handleClick);
+    // container.addEventListener("click", handleClick);
 
     handleMouseOut()
     cacheDimensions();
@@ -220,7 +223,7 @@ const AnimatedButton = ({ settings, onAction }) => {
       container.removeEventListener("mouseout", handleMouseOut);
       container.removeEventListener("mousedown", handleMouseDown);
       container.removeEventListener("mouseup", handleMouseUp);
-      container.removeEventListener("click", handleClick);
+      // container.removeEventListener("click", handleClick);
     };
   }, [settings, onAction, uniqueId]);
 
@@ -241,7 +244,7 @@ const AnimatedButton = ({ settings, onAction }) => {
     transition: "background-color 0.1s ease-in-out",
   };
 
-  return <div id={`container_${uniqueId}`} ref={containerRef} style={containerStyle}></div>;
+  return <a href={fs.link} target="_self" id={`container_${uniqueId}`} ref={containerRef} style={containerStyle}></a>;
 };
 
 export default AnimatedButton;
