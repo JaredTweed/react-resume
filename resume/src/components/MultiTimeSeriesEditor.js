@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import MultiTimeSeries from "./MultiTimeSeries";
 import leftArrow from "../assets/arrow-left.gif";
+import "./MultiTimeSeriesEditor.css";
 
 const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
   const [data, setData] = useState([
@@ -245,6 +246,7 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
         bottom: "calc(100% - 28px)",
         color: "black",
         left: "calc(50% + 110px)",
+        right: "0%",
         display: "flex",
         alignItems: "center"
       }}>

@@ -18,10 +18,12 @@ import tetrisbookingIcon from "./assets/tetrisbooking.png";
 import tealBlackVideo from "./assets/teal-black.mp4"; // Import the video file
 import background from "./assets/texture1.jpg";
 
-import mouseImg1 from "./assets/MouseMirage-img1.png"
-import mouseImg2 from "./assets/MouseMirage-img2.png"
-import panoramaImg1 from "./assets/Panorama-img1.png"
-import panoramaImg2 from "./assets/Panorama-img2.png"
+import mouseImg1 from "./assets/MouseMirage-img1.png";
+import mouseImg2 from "./assets/MouseMirage-img2.png";
+import panoramaImg1 from "./assets/Panorama-img1.png";
+import panoramaImg2 from "./assets/Panorama-img2.png";
+import softSkillYukon from "./assets/soft-skills-1.png";
+import softSkillCoach from "./assets/soft-skills-2.jpg";
 
 import linkIcon from "./assets/external-link.png"
 
@@ -188,6 +190,7 @@ const App = () => {
               <p>Displayed a strong work ethic when on Yukon diamond drilling rigs (up to 95 hour workweeks).</p>
               <p>Devoted years of volunteering and working with elementary school children.</p>
               <p>Excelled in culturally diverse workplaces.</p>
+              <div className="project-images"><img src={softSkillCoach} height="100%" /><img src={softSkillYukon} height="100%" /></div>
             </div>
           </div>
 
