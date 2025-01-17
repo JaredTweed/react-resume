@@ -71,12 +71,20 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
       const now = Date.now();
 
       const newData = dataRef.current.map((series, index) => {
+        const isBarGraph = dataKeys[index]?.dataKey?.settings?.isBarGraph;
+        const lastUpdateTime = series[series.length - 1][0];
+
+        // Check if we need to update the data for bar graphs only every 20 seconds
+        if (isBarGraph && now - lastUpdateTime < 20000) {
+          return series; // No update if less than 20 seconds have passed
+        }
+
         const decimals = dataKeys[index]?.dataKey?.decimals ?? 2; // Default to 2 decimals if undefined
         const lastValue = series[series.length - 1][1];
 
         // Determine fluctuation range
         const fluctuation = decimals === 0
-          ? (Math.random() < 0.5 ? -(Math.random() * 2 + 1) : Math.random() * 2 + 1)   // Random number in [-3, -1], [1, 3]
+          ? (Math.random() < 0.5 ? -(Math.random() * 2 + 1) : Math.random() * 2 + 1) // Random number in [-3, -1], [1, 3]
           : Math.random() - 0.5; // Default small fluctuation
 
         const newPoint = [now, lastValue + fluctuation];
@@ -85,10 +93,11 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
 
       dataRef.current = newData;
       setData(newData);
-    }, 5000);
+    }, 5000); // Base interval is 5 seconds
 
     return () => clearInterval(interval);
   }, [dataKeys]); // Add `dataKeys` as a dependency to reflect changes
+
 
 
   const addDataKey = () => {
@@ -138,7 +147,7 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
 
     let measurement = getRandomTimeSeriesData(dataKeys);
 
-    let barGraph = Math.random() < 0.2;
+    let barGraph = Math.random() < 0.4;
 
     const markareaOptions = [
       [
@@ -204,9 +213,6 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
     }
   };
 
-
-
-
   const [gifSrc, setGifSrc] = useState("");
   const [isFading, setIsFading] = useState(false);
   useEffect(() => {
@@ -224,7 +230,6 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
     return () => clearInterval(interval);
   }, []);
 
-
   return (
     <div style={{
       position: "absolute",
@@ -234,7 +239,8 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
       padding: "0",
       // border: "1px solid black"
     }}>
-      <div style={{
+      <div className="arrow-to-multi" style={{
+        overflow: "hidden",
         position: "absolute",
         bottom: "calc(100% - 28px)",
         color: "black",
