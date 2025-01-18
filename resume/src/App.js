@@ -32,6 +32,77 @@ const App = () => {
   const [showResume, setShowResume] = useState(false);
   const videoRef = useRef(null);
 
+
+  useEffect(() => {
+    const adjustImageDimensions = () => {
+      const containers = document.querySelectorAll(".project-images");
+
+      containers.forEach((container) => {
+        const images = container.querySelectorAll("img");
+        // const totalWidth = 700 // Desired total width of images
+        const totalWidth = Math.min(window.innerWidth - 54, 800);
+        console.log(totalWidth);
+        const gap = 10; // Space between images
+        let totalAspectRatio = 0;
+
+        const aspectRatios = Array.from(images).map((img) => {
+          const aspectRatio = img.naturalWidth / img.naturalHeight;
+          totalAspectRatio += aspectRatio;
+          return aspectRatio;
+        });
+
+        const availableWidth = totalWidth - (images.length - 1) * gap; // Account for gaps
+        const commonHeight = availableWidth / totalAspectRatio;
+
+        images.forEach((img, index) => {
+          const width = aspectRatios[index] * commonHeight;
+          img.style.width = `${width}px`;
+          img.style.height = `${commonHeight}px`;
+        });
+      });
+    };
+
+    const handleResize = () => {
+      adjustImageDimensions();
+    };
+
+
+    const handleImagesLoaded = () => {
+      adjustImageDimensions();
+    };
+
+    // Wait for all images to load before adjusting dimensions
+    const containers = document.querySelectorAll(".project-images");
+
+    containers.forEach((container) => {
+      const images = container.querySelectorAll("img");
+      let loadedCount = 0;
+
+      images.forEach((img) => {
+        if (img.complete) {
+          loadedCount++;
+        } else {
+          img.onload = () => {
+            loadedCount++;
+            if (loadedCount === images.length) handleImagesLoaded();
+          };
+        }
+      });
+
+      // If all images in the container are already loaded
+      if (loadedCount === images.length) {
+        handleImagesLoaded();
+      }
+    });
+
+    // Adjust dimensions on window resize
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const handsButton = {
     selectedIcon: handsIcon,
     text: "Hands<br>Detector",
@@ -128,7 +199,7 @@ const App = () => {
           <div id="projects" className="section">
             <h2>Projects</h2>
             <h3>Websites</h3>
-            <div style={{ maxWidth: "800px", display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "10px" }}>
+            <div style={{ margin: "0 40px", display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "10px" }}>
               <AnimatedButton settings={handsButton} />
               <AnimatedButton settings={bookingsButton} />
               <AnimatedButton settings={ttqbcButton} />
@@ -137,60 +208,64 @@ const App = () => {
             {/* <h3>Computer Vision</h3> */}
             <h3>Other Projects</h3>
 
-            <div className="project neumorphic">
-              <div className="job-text project-text">
-                <div className="header">
-                  <div className="title-and-date">
-                    <h3 className="title">Panorama Maker</h3>
-                    <p className="date"><strong>Feb - Apr 2022</strong></p>
-                  </div>
-                  <div className="project-links">
-                    <p className="company">MATLAB, Homographies, Harris Corner Detection, RANSAC</p>
-                    {/* <p className="company">More info: <a href="https://github.com/JaredTweed/PanoramaMaker">https://github.com/JaredTweed/PanoramaMaker</a></p> */}
-                    <p className="company"><a href="https://github.com/JaredTweed/PanoramaMaker">More Info <img src={linkIcon} alt="Link Icon" className="linkIcon" /></a></p>
-                  </div>
-                </div>
-              </div>
-              <div className="project-images"><img src={panoramaImg1} height="100%" /><img src={panoramaImg2} height="100%" /></div>
-            </div>
-
-            <div className="project neumorphic">
-              <div className="job-text project-text">
-                <div className="header">
-                  <div className="title-and-date">
-                    <h3 className="title">Java with Maven Game</h3>
-                    <p className="date"><strong>Feb - Apr 2022</strong></p>
-                  </div>
-                  <div className="project-links">
-                    <p className="company"><a href="https://github.com/JaredTweed/MouseMirageGame">More Info <img src={linkIcon} alt="Link Icon" className="linkIcon" /></a></p>
+            <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "10px" }}>
+              <div className="project neumorphic">
+                <div className="job-text project-text">
+                  <div className="header">
+                    <div className="title-and-date">
+                      <h3 className="title">Panorama Maker</h3>
+                      <p className="date"><strong>Mar 2023</strong></p>
+                    </div>
+                    <div className="project-links">
+                      <p className="info">MATLAB, Homographies, Harris Corner Detection, RANSAC</p>
+                      <p className="info"><a href="https://github.com/JaredTweed/PanoramaMaker">More Info <img src={linkIcon} alt="Link Icon" className="linkIcon" /></a></p>
+                    </div>
                   </div>
                 </div>
-                <ul>
-                  <li>Led Mouse Mirage's Java development using Apache Maven and the Swing Framework.</li>
-                  <li>Designed mechanics, including level progression, sound management, and UI navigation.</li>
-                </ul>
+                <div className="project-images"><img src={panoramaImg1} height="100%" /><img src={panoramaImg2} height="100%" /></div>
               </div>
-              <div className="project-images"><img src={mouseImg2} height="100%" /><img src={mouseImg1} height="100%" /></div>
-            </div>
 
+              <div className="project neumorphic">
+                <div className="job-text project-text">
+                  <div className="header">
+                    <div className="title-and-date">
+                      <h3 className="title">Java with Maven Game</h3>
+                      <p className="date"><strong>Feb - Apr 2022</strong></p>
+                    </div>
+                    <div className="project-links">
+                      <p className="info"><a href="https://github.com/JaredTweed/MouseMirageGame">More Info <img src={linkIcon} alt="Link Icon" className="linkIcon" /></a></p>
+                    </div>
+                  </div>
+                  <ul>
+                    <li>Led Mouse Mirage's Java development using Apache Maven and the Swing Framework.</li>
+                    <li>Designed mechanics, including level progression, sound management, and UI navigation.</li>
+                  </ul>
+                </div>
+                <div className="project-images"><img src={mouseImg2} height="100%" /><img src={mouseImg1} height="100%" /></div>
+              </div>
+            </div>
           </div>
 
           <div id="skills" className="section" >
             <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "100%", zIndex: 50 }}></div>
             <h2>Skills</h2>
-            <h3>Technical Skills</h3>
-            <div className="skill-block">
-              <p><strong>Languages:</strong> Java, MATLAB, Python, C/C++, SQL (Postgres), HTML/CSS, Typescript, JavaScript, R, LaTeX</p>
-              <p><strong>Frameworks:</strong> Angular, React, Node.js (Express.js), Java Swing, Flask</p>
-              <p><strong>Developer Tools:</strong> Git, Google Cloud Platform, AWS Lambda & EC2, Visual Studio, Unity3D, Apache Maven</p>
-              <p><strong>Libraries:</strong> NumPy, OpenCV, Detectron2, PyTorch, Regex, Tkinter, Websocket.io, MongoDB, Postman</p>
+            <div className="paper">
+              <h3>Technical Skills</h3>
+              <div className="skill-block">
+                <p className="skill-p"><strong>Languages:</strong> Java, MATLAB, Python, C/C++, SQL (Postgres), HTML/CSS, Typescript, JavaScript, R, LaTeX</p>
+                <p className="skill-p"><strong>Frameworks:</strong> Angular, React, Node.js (Express.js), Java Swing, Flask</p>
+                <p className="skill-p"><strong>Developer Tools:</strong> Git, Google Cloud Platform, AWS Lambda & EC2, Visual Studio, Unity3D, Apache Maven</p>
+                <p className="skill-p"><strong>Libraries:</strong> NumPy, OpenCV, Detectron2, PyTorch, Regex, Tkinter, Websocket.io, MongoDB, Postman</p>
+              </div>
             </div>
-            <h3>Transferable Soft Skills</h3>
-            <div className="skill-block">
-              <p>Displayed a strong work ethic when on Yukon diamond drilling rigs (up to 95 hour workweeks).</p>
-              <p>Devoted years of volunteering and working with elementary school children.</p>
-              <p>Excelled in culturally diverse workplaces.</p>
-              <div className="project-images"><img src={softSkillCoach} height="100%" /><img src={softSkillYukon} height="100%" /></div>
+            <div className="paper">
+              <h3>Transferable Soft Skills</h3>
+              <div className="skill-block">
+                <p className="skill-p">Displayed a strong work ethic when on Yukon diamond drilling rigs (up to 95 hour workweeks).</p>
+                <p className="skill-p">Devoted years of volunteering and working with elementary school children.</p>
+                <p className="skill-p">Excelled in culturally diverse workplaces.</p>
+                <div className="project-images"><img src={softSkillCoach} height="100%" /><img src={softSkillYukon} height="100%" /></div>
+              </div>
             </div>
           </div>
 
@@ -199,7 +274,7 @@ const App = () => {
 
       <div id="contact" className="section" style={{ padding: "0px" }}>
 
-        <footer style={{ padding: "20px", backgroundColor: "rgb(0, 0, 0)", color: "white", textAlign: "center", fontSize: "14px" }}>
+        <footer style={{ padding: "20px 0", backgroundColor: "rgb(0, 0, 0)", color: "white", textAlign: "center", fontSize: "14px" }}>
           <p style={{ margin: "5px 0" }}>
             <a
               href="https://linkedin.com/in/jared-tweed"
