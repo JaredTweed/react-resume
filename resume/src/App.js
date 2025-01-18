@@ -179,9 +179,9 @@ const App = () => {
                 </div>
 
                 <ul>
-                  <li><strong>Soft Skills:</strong> Engaged in in-person product improvement discussions with clients and worked as the sole developer for the business.</li>
+                  <li><strong>Soft Skills:</strong> Engaged in face-to-face product improvement discussions with clients and worked as the sole developer for the business.</li>
                   <li><strong>Data Processing:</strong> Parsed JSON, XML, and CSV data using Python and utilized multithreading to optimize data curation speeds.</li>
-                  <li><strong>Front End:</strong> Built custom widgets for ThingsBoard, implemented features using HTML, CSS, and JavaScript, optimized the ECharts.js charting library through multithreading, and provided UX design recommendations.</li>
+                  <li><strong>Front End:</strong> Built custom widgets for ThingsBoard. Implemented features using HTML, CSS, and JavaScript. Optimized the ECharts charting library through multithreading and provided UX design recommendations.</li>
                   <li><strong>Back End:</strong> Developed backend solutions using Node-RED, researched optimal APIs through documentation reviews, implemented email subscriptions using SendGrid and AWS Lambda/EC2, integrated MongoDB with Node.js, and worked with MQTT protocols.</li>
                 </ul>
               </div>
@@ -261,7 +261,7 @@ const App = () => {
             <div className="paper">
               <h3>Transferable Soft Skills</h3>
               <div className="skill-block">
-                <p className="skill-p">Displayed a strong work ethic when on Yukon diamond drilling rigs (up to 95 hour workweeks).</p>
+                <p className="skill-p">Displayed a strong work ethic on Yukon diamond drilling rigs (up to 95 hours per week).</p>
                 <p className="skill-p">Devoted years of volunteering and working with elementary school children.</p>
                 <p className="skill-p">Excelled in culturally diverse workplaces.</p>
                 <div className="project-images"><img src={softSkillCoach} height="100%" /><img src={softSkillYukon} height="100%" /></div>

@@ -267,7 +267,26 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
         </div>
       </div>
 
-
+      <button
+        onClick={removeDataKey}
+        style={{
+          backgroundColor: "black",
+          // backgroundImage: "radial-gradient(93% 87% at 87% 89%, rgba(0, 0, 0, 0.23) 0%, transparent 86.18%), radial-gradient(66% 66% at 26% 20%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%)",
+          fontFamily: "Poppins, san-serif",
+          fontWeight: "bold",
+          border: 0,
+          color: "white",
+          border: "none",
+          borderRadius: "10px",
+          padding: 0,
+          cursor: "pointer",
+          width: "100px",
+          height: "28px",
+          margin: "0 5px 5px 0"
+        }}
+      >
+        -
+      </button>
       <button
         onClick={addDataKey}
         style={{
@@ -287,25 +306,6 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
         }}
       >
         +
-      </button>
-      <button
-        onClick={removeDataKey}
-        style={{
-          backgroundColor: "black",
-          // backgroundImage: "radial-gradient(93% 87% at 87% 89%, rgba(0, 0, 0, 0.23) 0%, transparent 86.18%), radial-gradient(66% 66% at 26% 20%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%)",
-          fontFamily: "Poppins, san-serif",
-          fontWeight: "bold",
-          border: 0,
-          color: "white",
-          border: "none",
-          borderRadius: "10px",
-          padding: 0,
-          cursor: "pointer",
-          width: "100px",
-          height: "28px",
-        }}
-      >
-        -
       </button>
       <div
         style={{
