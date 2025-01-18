@@ -28,7 +28,7 @@ const HeroSection = () => {
       <div className="hero-content">
         {/* Text Content */}
         <div className="hero-text">
-          <h1>
+          <h1 className="hero-title">
             Jared Tweed
             <br />
             <span>Full-Stack Developer</span>

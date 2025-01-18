@@ -37,11 +37,12 @@ const App = () => {
     const adjustImageDimensions = () => {
       const containers = document.querySelectorAll(".project-images");
 
+      const referenceMeasurement = document.querySelectorAll(".reference-measurement");
+
       containers.forEach((container) => {
         const images = container.querySelectorAll("img");
         // const totalWidth = 700 // Desired total width of images
-        const totalWidth = Math.min(window.innerWidth - 54, 800);
-        console.log(totalWidth);
+        const totalWidth = Math.min(window.innerWidth - 36, referenceMeasurement[0].offsetWidth - 20, 800);
         const gap = 10; // Space between images
         let totalAspectRatio = 0;
 
@@ -249,7 +250,7 @@ const App = () => {
           <div id="skills" className="section" >
             <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "100%", zIndex: 50 }}></div>
             <h2>Skills</h2>
-            <div className="paper">
+            <div className="paper reference-measurement">
               <h3>Technical Skills</h3>
               <div className="skill-block">
                 <p className="skill-p"><strong>Languages:</strong> Java, MATLAB, Python, C/C++, SQL (Postgres), HTML/CSS, Typescript, JavaScript, R, LaTeX</p>
