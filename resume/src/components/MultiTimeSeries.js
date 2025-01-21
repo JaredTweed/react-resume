@@ -185,7 +185,7 @@ export default function MultiTimeSeries({
               formatXAxisLabel(value, theMinTime, theMaxTime)
           },
           min: theMinTime,
-          max: theMaxTime
+          max: theMaxTime,
         },
         yAxis: {
           type: "value",
@@ -236,7 +236,8 @@ export default function MultiTimeSeries({
             });
             // Optionally append the "Cursor Height" if showMouseHeight
             return `${dateStr}<br/>${tipLines.join('<br/>')}<br/>${chartInstance.myMouseLocation || ''}`;
-          }
+          },
+          extraCssText: 'z-index: 1; font-family: Poppins, san-serif;'
         },
         series: allSeries
       };
@@ -410,7 +411,7 @@ export default function MultiTimeSeries({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
-        backgroundColor: "white",
+        background: "var(--paper-color)",
         padding: `${lrtpadding}px ${lrtpadding}px ${bpadding}px ${lrtpadding}px`,
         borderRadius: "15px",
         boxShadow: "5px 5px 10px rgba(0, 0, 0, 0.3)"
@@ -449,9 +450,8 @@ export default function MultiTimeSeries({
                 justifyContent: "center",
                 textAlign: "center",
                 verticalAlign: "middle",
-                border: "1px solid #000",
+                border: "1px solid var(--paper-text-color)",
                 borderRadius: "8px",
-                color: "black",
                 fontSize: "14px",
                 fontWeight: "bold",
                 marginBottom: "0px",
@@ -494,9 +494,9 @@ export default function MultiTimeSeries({
             fontWeight: "bold",
             marginTop: `${3 - additionalHeight}px`,
             marginBottom: "0px",
-            border: "1px solid #000",
+            border: "1px solid var(--paper-text-color)",
             borderRadius: "8px",
-            color: "black"
+            color: "var(--paper-text-color)"
           }}
         >
           Latest
@@ -542,10 +542,10 @@ function buildValueBoxHTML(dk, keyData, settings, showAll) {
   if (!keyData || !keyData.length) {
     return `
       <div style="display: flex; flex-direction: column;">
-        <span style="white-space: nowrap; overflow: hidden; font-weight: bold;">
+        <span style="white-space: nowrap; overflow: hidden; font-weight: bold; color: var(--paper-text-color);">
           ${label}
         </span>
-        <span style="white-space: nowrap; overflow: hidden; font-weight: normal;">
+        <span style="white-space: nowrap; overflow: hidden; font-weight: normal; color: var(--paper-text-color);">
           No Data
         </span>
       </div>
@@ -568,11 +568,11 @@ function buildValueBoxHTML(dk, keyData, settings, showAll) {
   if (!showAll) {
     // Show only label + latest
     return `
-      <div style="padding: 5px; font-family: 'Poppins', san-serif;">
-        <div style="font-weight: bold; white-space: nowrap; overflow: hidden;">
+      <div style="padding: 5px; font-family: 'Poppins', san-serif; ">
+        <div style="font-weight: bold; white-space: nowrap; overflow: hidden; color: var(--paper-text-color);">
           ${label}
         </div>
-        <div style="white-space: nowrap; overflow: hidden;">
+        <div style="font-weight: normal; white-space: nowrap; overflow: hidden; color: var(--paper-text-color);">
           ${formatNumberWithCommas(latestValue)}${units}
         </div>
       </div>
@@ -581,8 +581,8 @@ function buildValueBoxHTML(dk, keyData, settings, showAll) {
     // Show label + all configured stats
     const row = (title, val) => `
       <div style="display: table-row;">
-        <span style="display: table-cell; padding-right: 10px; white-space: nowrap;">${title}:</span>
-        <span style="display: table-cell; text-align: right; white-space: nowrap;">${val}</span>
+        <span style="display: table-cell; padding-right: 10px; white-space: nowrap; color: var(--paper-text-color);">${title}:</span>
+        <span style="display: table-cell; text-align: right; white-space: nowrap; color: var(--paper-text-color);">${val}</span>
       </div>
     `;
     const minHTML = wantMin ? row('Min', formatNumberWithCommas(minValue) + units) : '';
@@ -592,11 +592,11 @@ function buildValueBoxHTML(dk, keyData, settings, showAll) {
 
     return `
       <div style="padding: 5px; font-family: 'Poppins', san-serif;">
-        <strong style="font-weight: 800; display: block; white-space: nowrap; overflow: hidden;">
+        <strong style="font-weight: 800; display: block; white-space: nowrap; overflow: hidden; color: var(--paper-text-color);">
           ${label}
         </strong>
         <div style="font-size: 13px; text-align: center; font-weight: normal;">
-          <div style="display: table; margin: 0 auto;">
+          <div style="display: table; margin: 0 auto; ">
             ${row('Latest', formatNumberWithCommas(latestValue) + units)}
             ${minHTML}
             ${maxHTML}

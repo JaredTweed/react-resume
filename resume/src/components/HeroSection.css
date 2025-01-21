@@ -4,12 +4,8 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 50vh;
-  /* Full viewport height */
-  /* background: #3d3d3d;
-  background: linear-gradient(135deg, #3d3d3d, #5a5a5a, #7a7a7a); */
-  background: #e0e0e0;
-  background: linear-gradient(135deg, #e0e0e0, #f0f0f0, #ffffff);
+  height: max(50vh, 462px);
+  /* height: 100%; */
   background: var(--background-color);
 
   /* Subtle background gradient */
@@ -28,7 +24,7 @@
   text-align: left;
   max-width: 900px;
   width: 100%;
-  padding: 20px;
+  padding: 20px 0 20px 20px;
 }
 
 /* Text Section */
@@ -40,6 +36,7 @@
   font-size: 3rem;
   margin: 0 0 20px;
   line-height: 1.2;
+  padding-right: 0;
 }
 
 .hero-text p {
@@ -108,7 +105,46 @@
   }
 
   .hero-section {
-    height: 60vh;
+    /* height: 60vh; */
+    height: max(60vh, 462px);
+  }
+}
+
+@media (max-width: 557px) {
+
+  .hero-text h1 {
+    font-size: 2rem;
+    margin: 0 0 10px;
+  }
+}
+
+@media (max-width: 383px) {
+
+  .hero-text h1 {
+    font-size: 1.7rem;
+  }
+
+  .hero-text p {
+    font-size: 0.8rem;
+  }
+
+  .hero-resume-link {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 329px) {
+
+  .hero-text h1 {
+    font-size: 1.5rem;
+  }
+
+  .hero-text p {
+    font-size: 0.75rem;
+  }
+
+  .hero-resume-link {
+    font-size: 0.8rem;
   }
 }
 

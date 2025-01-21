@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import "./App.css";
 
 import AnimatedButton from "./components/AnimatedButton";
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
-import MultiTimeSeries from './components/MultiTimeSeries'
 import MultiTimeSeriesEditor from './components/MultiTimeSeriesEditor'
 
 import '@mdi/font/css/materialdesignicons.min.css'; // Import Material Design Icons CSS
@@ -15,8 +14,6 @@ import handsIcon from "./assets/hands.png";
 import ttqbcIcon from "./assets/texttoquestion.png";
 import troublemakerIcon from "./assets/troublemaker.jpg";
 import tetrisbookingIcon from "./assets/tetrisbooking.png";
-import tealBlackVideo from "./assets/teal-black.mp4"; // Import the video file
-import background from "./assets/texture1.jpg";
 
 import mouseImg1 from "./assets/MouseMirage-img1.png";
 import mouseImg2 from "./assets/MouseMirage-img2.png";
@@ -28,11 +25,6 @@ import softSkillCoach from "./assets/soft-skills-2.jpg";
 import linkIcon from "./assets/external-link.png"
 
 const App = () => {
-  const [showText, setShowText] = useState(false);
-  const [showResume, setShowResume] = useState(false);
-  const videoRef = useRef(null);
-
-
   useEffect(() => {
     const adjustImageDimensions = () => {
       const containers = document.querySelectorAll(".project-images");
@@ -40,7 +32,11 @@ const App = () => {
       const referenceMeasurement = document.querySelectorAll(".reference-measurement");
 
       containers.forEach((container) => {
-        const images = container.querySelectorAll("img");
+        // const images = container.querySelectorAll("img");
+        const images = Array.from(container.querySelectorAll("img")).filter((img) => {
+          // Include only images that are not hidden
+          return window.getComputedStyle(img).display !== "none";
+        });
         // const totalWidth = 700 // Desired total width of images
         const totalWidth = Math.min(window.innerWidth - 36, referenceMeasurement[0].offsetWidth - 20, 800);
         const gap = 10; // Space between images
@@ -160,7 +156,7 @@ const App = () => {
           display: "flex", flexDirection: "column", alignItems: "center", position: "relative"
         }}>
 
-          <HeroSection />
+          <HeroSection style={{ height: "70vh" }} />
 
 
           <div id="experience" className="section">
@@ -222,8 +218,11 @@ const App = () => {
                       <p className="info"><a href="https://github.com/JaredTweed/PanoramaMaker">More Info <img src={linkIcon} alt="Link Icon" className="linkIcon" /></a></p>
                     </div>
                   </div>
+                  <ul>
+                    <li>Creates a panorama from given input images.</li>
+                  </ul>
                 </div>
-                <div className="project-images"><img src={panoramaImg1} height="100%" /><img src={panoramaImg2} height="100%" /></div>
+                <div className="project-images"><img src={panoramaImg1} height="100%" alt="" /><img src={panoramaImg2} height="100%" alt="" /></div>
               </div>
 
               <div className="project neumorphic">
@@ -242,7 +241,7 @@ const App = () => {
                     <li>Designed mechanics, including level progression, sound management, and UI navigation.</li>
                   </ul>
                 </div>
-                <div className="project-images"><img src={mouseImg2} height="100%" /><img src={mouseImg1} height="100%" /></div>
+                <div className="project-images"><img src={mouseImg2} height="100%" alt="" /><img src={mouseImg1} height="100%" alt="" /></div>
               </div>
             </div>
           </div>
@@ -265,7 +264,10 @@ const App = () => {
                 <p className="skill-p">Displayed a strong work ethic on Yukon diamond drilling rigs (up to 95 hours per week).</p>
                 <p className="skill-p">Devoted years of volunteering and working with elementary school children.</p>
                 <p className="skill-p">Excelled in culturally diverse workplaces.</p>
-                <div className="project-images"><img src={softSkillCoach} height="100%" /><img src={softSkillYukon} height="100%" /></div>
+                <div className="project-images">
+                  <img className="coaching-soft-skil-image" src={softSkillCoach} height="100%" alt="" />
+                  <img src={softSkillYukon} height="100%" alt="" />
+                </div>
               </div>
             </div>
           </div>
