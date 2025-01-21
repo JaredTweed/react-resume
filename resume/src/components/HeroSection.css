@@ -22,9 +22,9 @@
   display: flex;
   align-items: center;
   text-align: left;
-  max-width: 900px;
+
   width: 100%;
-  padding: 20px 0 20px 20px;
+  padding: 80px;
 }
 
 /* Text Section */
@@ -46,10 +46,9 @@
 }
 
 .hero-text h1 span {
-  color: #007bff;
   color: hsl(28, 60%, 60%);
-  /* filter: url(#grainy);
-  background: black; */
+  /* filter: url(#grainy); */
+  /* background: black; */
 }
 
 
@@ -96,8 +95,70 @@
 .hero-image {
   /* flex: 1; */
   display: flex;
-  justify-content: center;
+  justify-content: right;
 }
+
+
+
+
+.hero-image img {
+
+  /* Limit image size */
+  width: 100%;
+  border-radius: 15%;
+  /* Accent border */
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-button {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  box-shadow: var(--neumorphic-shadow);
+  border: none;
+  border-radius: 5px;
+}
+
+
+.hero-section {
+  height: max(70vh, 462px);
+}
+
+.hero-text {
+  text-wrap: nowrap;
+}
+
+.hero-content {
+  max-width: 1200px;
+}
+
+.hero-image img {
+  max-width: 80%;
+  max-height: max(46vh, 450px);
+}
+
+@media (max-width: 1080px) {
+  .hero-content {
+    padding: 40px;
+  }
+}
+
+@media (max-width: 965px) {
+  .hero-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 936px) {
+  .hero-image img {
+    max-width: 90%;
+  }
+}
+
 
 @media (max-width: 876px) {
   .hero-image {
@@ -105,7 +166,6 @@
   }
 
   .hero-section {
-    /* height: 60vh; */
     height: max(60vh, 462px);
   }
 }
@@ -146,27 +206,4 @@
   .hero-resume-link {
     font-size: 0.8rem;
   }
-}
-
-
-.hero-image img {
-  max-width: 300px;
-  /* Limit image size */
-  width: 100%;
-  border-radius: 15%;
-  /* Accent border */
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-}
-
-.toggle-button {
-  position: absolute;
-  top: 25px;
-  right: 25px;
-  cursor: pointer;
-  background: transparent;
-  color: var(--text-color);
-  font-family: 'Poppins', sans-serif;
-  box-shadow: var(--neumorphic-shadow);
-  border: none;
-  border-radius: 5px;
 }
