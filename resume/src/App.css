@@ -260,6 +260,10 @@ h3 {
   .section {
     padding: 0 0 10px 0;
   }
+
+  .grainy-section {
+    margin-top: 0px;
+  }
 }
 
 @media screen and (max-width: 1180px) {
