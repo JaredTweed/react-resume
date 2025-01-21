@@ -160,7 +160,7 @@ const App = () => {
 
 
           <div id="experience" className="section">
-            <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "100%", zIndex: 100 }}></div>
+            <div className="grainy-section" />
             <h2>Work Experience</h2>
             <div className="job">
               <div className="job-text">
@@ -194,6 +194,8 @@ const App = () => {
 
 
           <div id="projects" className="section">
+            {/* <div className="grainy-section" /> */}
+
             <h2>Projects</h2>
             <h3>Websites</h3>
             <div style={{ margin: "0 40px", display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "10px" }}>
@@ -247,7 +249,7 @@ const App = () => {
           </div>
 
           <div id="skills" className="section" >
-            <div style={{ filter: "url(#grainy)", pointerEvents: "none", opacity: 0.22, position: "absolute", width: "100%", height: "100%", zIndex: 50 }}></div>
+            <div className="grainy-section" />
             <h2>Skills</h2>
             <div className="paper reference-measurement">
               <h3>Technical Skills</h3>
