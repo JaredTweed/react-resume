@@ -14,6 +14,7 @@ import handsIcon from "./assets/hands.png";
 import ttqbcIcon from "./assets/texttoquestion.png";
 import troublemakerIcon from "./assets/troublemaker.jpg";
 import tetrisbookingIcon from "./assets/tetrisbooking.png";
+import graphtolatexIcon from "./assets/graphtolatex.png";
 
 import mouseImg1 from "./assets/MouseMirage-img1.png";
 import mouseImg2 from "./assets/MouseMirage-img2.png";
@@ -136,6 +137,15 @@ const App = () => {
     textColor: "var(--text-color)"
   };
 
+  const graphtolatexButton = {
+    selectedIcon: graphtolatexIcon,
+    text: "Graph To<br>LaTeX",
+    link: "https://jaredtweed.github.io/graphtolatex/",
+    shadow: "var(--neumorphic-shadow)",
+    color: "transparent",
+    textColor: "var(--text-color)"
+  };
+
   return (
     <div
       style={{
@@ -203,6 +213,7 @@ const App = () => {
               <AnimatedButton settings={bookingsButton} />
               <AnimatedButton settings={ttqbcButton} />
               <AnimatedButton settings={troublemakerButton} />
+              <AnimatedButton settings={graphtolatexButton} />
             </div>
             {/* <h3>Computer Vision</h3> */}
             <h3>Other Projects</h3>
