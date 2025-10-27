@@ -220,12 +220,12 @@ const App = () => {
             <h2>Projects</h2>
             <h3>Websites</h3>
             <div style={{ margin: "0 40px", display: "flex", flexDirection: "row", flexWrap: "wrap", justifyContent: "center", alignItems: "center", gap: "10px" }}>
+              <AnimatedButton settings={sharedLensButton} />
               <AnimatedButton settings={handsButton} />
               <AnimatedButton settings={bookingsButton} />
               <AnimatedButton settings={ttqbcButton} />
               <AnimatedButton settings={troublemakerButton} />
-              <AnimatedButton settings={graphtolatexButton} />
-              <AnimatedButton settings={sharedLensButton} />
+              {/* <AnimatedButton settings={graphtolatexButton} /> */}
             </div>
             {/* <h3>Computer Vision</h3> */}
             <h3>Other Projects</h3>
