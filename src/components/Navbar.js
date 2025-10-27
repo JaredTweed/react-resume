@@ -126,7 +126,7 @@ const Navbar = () => {
       </svg>
 
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <a href="#" style={{ textDecoration: "none", fontWeight: "bold", fontSize: "25px", lineHeight: "25px" }}>
+        <a href="#top" style={{ textDecoration: "none", fontWeight: "bold", fontSize: "25px", lineHeight: "25px" }}>
           Jared<br />Tweed
         </a>
 

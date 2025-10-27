@@ -102,9 +102,6 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
 
 
   const addDataKey = () => {
-    const newIndex = dataKeys.length + 1;
-    const newLabel = `DataKey ${newIndex}`;
-
     function getRandomTimeSeriesData(datakeys) {
       let units = [
         { shorthand: "°C", label: "Temperature", initial: () => 15 + Math.random() * 20, decimals: 2 },
@@ -274,7 +271,6 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
           // backgroundImage: "radial-gradient(93% 87% at 87% 89%, rgba(0, 0, 0, 0.23) 0%, transparent 86.18%), radial-gradient(66% 66% at 26% 20%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%)",
           fontFamily: "Poppins, san-serif",
           fontWeight: "bold",
-          border: 0,
           color: "white",
           border: "none",
           borderRadius: "10px",
@@ -294,7 +290,6 @@ const MultiTimeSeriesEditor = ({ initialDataKeys, initialSettings }) => {
           // backgroundImage: "radial-gradient(93% 87% at 87% 89%, rgba(0, 0, 0, 0.23) 0%, transparent 86.18%), radial-gradient(66% 66% at 26% 20%, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0) 69.79%, rgba(255, 255, 255, 0) 100%)",
           fontFamily: "Poppins, san-serif",
           fontWeight: "bold",
-          border: 0,
           color: "white",
           border: "none",
           borderRadius: "10px",

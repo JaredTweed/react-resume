@@ -1,48 +1,72 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-const AnimatedButton = ({ settings, onAction }) => {
+const DEFAULT_SETTINGS = {
+  horizontalAnim: true,
+  fontSize: "20px",
+  fontWeight: 700,
+  border: "none",
+  shadow: "none",
+  iconSize: 100,
+  iconBorder: "none",
+  iconBorderRadius: "10px",
+  width: 250,
+  height: 70,
+  color: "black",
+  selectedIcon: "mdi:home",
+  text: "Use &lt;br&gt; for<br>a newline",
+  textColor: "white",
+  iconColor: "white",
+  borderRadius: "20px",
+  link: null,
+};
+
+const buildFinalSettings = (settings = {}) => {
+  const merged = { ...DEFAULT_SETTINGS, ...settings };
+  const hasMdiIcon = merged.selectedIcon?.startsWith("mdi:");
+  const spaceBetween = hasMdiIcon
+    ? 0
+    : merged.spaceBetween ?? (merged.horizontalAnim ? 5 : 0);
+  const iconHoverColor = merged.iconHoverColor || merged.iconColor;
+  const hoverColor = merged.hoverColor || merged.color;
+  const hoverBorder = merged.hoverBorder || merged.border;
+  const hoverShadow = merged.hoverShadow || merged.shadow;
+
+  return {
+    ...merged,
+    spaceBetween,
+    textActiveColor: merged.textActiveColor || merged.textColor,
+    iconHoverColor,
+    iconActiveColor: merged.iconActiveColor || iconHoverColor,
+    hoverColor,
+    activeColor: merged.activeColor || hoverColor,
+    hoverBorder,
+    activeBorder: merged.activeBorder || hoverBorder,
+    hoverShadow,
+    activeShadow: merged.activeShadow || hoverShadow,
+  };
+};
+
+const getAccessibleLabel = (text) => {
+  if (!text) return undefined;
+  return text
+    .replace(/<br\s*\/?>/gi, " ")
+    .replace(/<\/?[^>]*>/g, "")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&amp;/gi, "&")
+    .trim();
+};
+
+const AnimatedButton = ({ settings = {}, onAction }) => {
   const containerRef = useRef(null);
   const lastInputMethodRef = useRef("mouse");
   const [uniqueId] = useState(uuidv4());
   const [hoverState, setHoverState] = useState(false);
   const [activeState, setActiveState] = useState(false);
 
-  // Default settings
-  const defaultSettings = {
-    horizontalAnim: true,
-    fontSize: "20px",
-    fontWeight: 700,
-    border: "none",
-    shadow: "none",
-    iconSize: 100,
-    iconBorder: "none",
-    iconBorderRadius: "10px",
-    width: 250,
-    height: 70,
-    color: "black",
-    selectedIcon: "mdi:home",
-    text: "Use &lt;br&gt; for<br>a newline",
-    textColor: "white",
-    iconColor: "white",
-    borderRadius: "20px",
-    link: null,
-  };
-
-  // Merge user settings with defaults
-  const fs = { ...defaultSettings, ...settings };
-
-  // Defaults dependent on final settings
-  fs.spaceBetween = fs.selectedIcon?.startsWith("mdi:") ? 0 : fs.spaceBetween || fs.horizontalAnim ? 5 : 0;
-  fs.textActiveColor = fs.textActiveColor || fs.textColor;
-  fs.iconHoverColor = fs.iconHoverColor || fs.iconColor;
-  fs.iconActiveColor = fs.iconActiveColor || fs.iconHoverColor;
-  fs.hoverColor = fs.hoverColor || fs.color;
-  fs.activeColor = fs.activeColor || fs.hoverColor;
-  fs.hoverBorder = fs.hoverBorder || fs.border;
-  fs.activeBorder = fs.activeBorder || fs.hoverBorder;
-  fs.hoverShadow = fs.hoverShadow || fs.shadow;
-  fs.activeShadow = fs.activeShadow || fs.hoverShadow;
+  const fs = useMemo(() => buildFinalSettings(settings), [settings]);
+  const ariaLabel = useMemo(() => getAccessibleLabel(fs.text), [fs.text]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -235,7 +259,7 @@ const AnimatedButton = ({ settings, onAction }) => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("touchstart", handleTouchStart);
     };
-  }, [settings, onAction, uniqueId]);
+  }, [fs, onAction, uniqueId]);
 
   const containerStyle = {
     position: "relative",
@@ -254,7 +278,16 @@ const AnimatedButton = ({ settings, onAction }) => {
     transition: "background-color 0.1s ease-in-out",
   };
 
-  return <a href={fs.link} target="_self" id={`container_${uniqueId}`} ref={containerRef} style={containerStyle}></a>;
+  return (
+    <a
+      href={fs.link}
+      target="_self"
+      id={`container_${uniqueId}`}
+      ref={containerRef}
+      style={containerStyle}
+      aria-label={ariaLabel}
+    ></a>
+  );
 };
 
 export default AnimatedButton;

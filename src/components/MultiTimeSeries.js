@@ -247,7 +247,7 @@ export default function MultiTimeSeries({
       updateXAxisSplitNumber(chartInstance);
       chartInstance.resize();
     });
-  }, [chartDataList, dataKeys, minTime, maxTime, settings]);
+  }, [chartDataList, data, dataKeys, minTime, maxTime, settings]);
 
   /**
    * 4) After the charts have been created/updated, measure the legend widths.
@@ -282,7 +282,7 @@ export default function MultiTimeSeries({
     if (newMaxWidth !== maxLegendWidth) {
       setMaxLegendWidth(newMaxWidth);
     }
-  }, [chartDataList, data, dataKeys, settings, showAllData, uniqueId]);
+  }, [chartDataList, data, dataKeys, maxLegendWidth, settings, showAllData, uniqueId]);
 
   /**
    * 5) Synchronize tooltips if needed (and if we have multiple charts).
@@ -679,7 +679,7 @@ function pushMarkAreasSeries(dk, allData, allDataKeys) {
     const colorMatch = mkLabel.match(/^(.+)-(\d+)-(g|y|p|r)-(min|max)$/);
     if (!colorMatch) return;
 
-    const [_, label, seed, colorChar, type] = colorMatch;
+    const [, label, seed, colorChar, type] = colorMatch;
     if (label !== baseLabel) return;
 
     const oppositeType = type === 'min' ? 'max' : 'min';

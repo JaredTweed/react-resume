@@ -158,6 +158,7 @@ const App = () => {
 
   return (
     <div
+      id="top"
       style={{
         backgroundSize: "cover",
         backgroundAttachment: "fixed",
