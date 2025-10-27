@@ -5,3 +5,11 @@ npm install @mdi/font @fontsource/poppins web-vitals
 npm start
 npm run build
 ```
+
+```bash
+sudo dnf update
+sudo dnf install nodejs npm
+npm install @mdi/font @fontsource/poppins web-vitals
+npm start
+npm run build
+```

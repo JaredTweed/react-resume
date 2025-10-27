@@ -195,7 +195,7 @@ h3 {
 }
 
 .project-text {
-  width: fill;
+  width: stretch;
   min-width: none;
   max-width: 800px;
   margin: 0 10px;
