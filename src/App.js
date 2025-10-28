@@ -200,7 +200,8 @@ const App = () => {
                   <li><strong>Soft Skills:</strong> Engaged in face-to-face product improvement discussions with clients and worked as the sole developer for the business.</li>
                   <li><strong>Data Processing:</strong> Parsed JSON, XML, and CSV data using Python and utilized multithreading to optimize data curation speeds.</li>
                   <li><strong>Front End:</strong> Built custom widgets for ThingsBoard. Implemented features using HTML, CSS, and JavaScript. Optimized the ECharts charting library through multithreading and provided UX design recommendations.</li>
-                  <li><strong>Back End:</strong> Developed backend solutions using Node-RED, researched optimal APIs through documentation reviews, implemented email subscriptions using SendGrid and AWS Lambda/EC2, integrated MongoDB with Node.js, and worked with MQTT protocols.</li>
+                  <li><strong>Back End:</strong> Deployed multiple instances of Node-RED on a single AWS EC2 instance with an HTTPS domain using a script to easily list, edit, add, and remove users; researched optimal APIs through documentation reviews; implemented email subscriptions using SendGrid and AWS Lambda; integrated MongoDB with Node.js; and worked with MQTT and AMQP protocols.</li>
+                  <li><strong>Artificial Intelligence:</strong> Built a neural network to detect anomalies within our data collection.</li>
                 </ul>
               </div>
 
@@ -277,10 +278,18 @@ const App = () => {
             <div className="paper reference-measurement">
               <h3>Technical Skills</h3>
               <div className="skill-block">
-                <p className="skill-p"><strong>Languages:</strong> Java, MATLAB, Python, C/C++, SQL (Postgres), HTML/CSS, Typescript, JavaScript, R, LaTeX</p>
-                <p className="skill-p"><strong>Frameworks:</strong> Angular, React, Node.js (Express.js), Java Swing, Flask</p>
-                <p className="skill-p"><strong>Developer Tools:</strong> Git, Google Cloud Platform, AWS Lambda & EC2, Visual Studio, Unity3D, Apache Maven</p>
-                <p className="skill-p"><strong>Libraries:</strong> NumPy, OpenCV, Detectron2, PyTorch, Regex, Tkinter, Websocket.io, MongoDB, Postman</p>
+                <p className="skill-p">
+                  <strong>Languages:</strong> Java, MATLAB, Python, C/C++, SQL (Postgres), HTML/CSS, Typescript, JavaScript, R, LaTeX, Dart
+                </p>
+                <p className="skill-p">
+                  <strong>Frameworks:</strong> Angular, React, Node.js (Express.js), Java Swing, Flask, Flutter
+                </p>
+                <p className="skill-p">
+                  <strong>Developer Tools:</strong> Git, Google Cloud Platform, Firebase, AWS (Lambda, API Gateway, S3, EventBridge, IAM, &amp; EC2), Visual Studio, Unity3D, Apache Maven
+                </p>
+                <p className="skill-p">
+                  <strong>Libraries:</strong> NumPy, OpenCV, Detectron2, PyTorch, Regex, Tkinter, Websocket.io, MongoDB, Postman
+                </p>
               </div>
             </div>
             <div className="paper">
