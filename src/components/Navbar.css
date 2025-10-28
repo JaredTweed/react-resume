@@ -1,6 +1,6 @@
 .nav-button {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 5px 20px;
   background: white;
   background: var(--neurmorphic-right-color);
   border-radius: 50px;
@@ -11,7 +11,7 @@
 
 header {
   display: block;
-  padding: 20px;
+  padding: 10px 20px;
   margin: 0;
   position: sticky;
   top: 0;

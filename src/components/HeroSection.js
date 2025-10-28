@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
 import "./HeroSection.css"; // For styling
 import selfie from "../assets/selfie-mirror-small.jpg";
 
@@ -21,8 +23,12 @@ const HeroSection = () => {
   return (
     <section className="hero-section">
       {/* <div style={{ position: "absolute", pointerEvents: "none", width: "100%", opacity: 0.22, height: "100%", filter: "url(#grainy)" }}></div> */}
-      <button className="toggle-button" onClick={toggleTheme}>
-        {theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
+      <button
+        className="toggle-button"
+        onClick={toggleTheme}
+        aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      >
+        {theme === "dark" ? <LightModeIcon /> : <DarkModeIcon />}
       </button>
 
       <div className="hero-content">

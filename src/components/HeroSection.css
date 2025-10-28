@@ -110,7 +110,7 @@
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
 }
 
-.toggle-button {
+/* .toggle-button {
   position: absolute;
   top: 25px;
   right: 25px;
@@ -121,6 +121,37 @@
   box-shadow: var(--neumorphic-shadow);
   border: none;
   border-radius: 5px;
+} */
+
+.toggle-button {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  cursor: pointer;
+
+  display: flex;                  /* enable flexbox */
+  align-items: center;            /* vertical centering */
+  justify-content: center;        /* horizontal centering */
+
+  background: transparent;
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  box-shadow: var(--neumorphic-shadow);
+  border: none;
+  border-radius: 5px;
+
+  width: 45px;                    /* ensures square button */
+  height: 45px;
+
+  transition: all 0.3s ease;
+}
+
+.toggle-button:hover {
+  transform: scale(1.05);
+}
+
+.toggle-button svg {
+  font-size: 1.5rem;              /* adjust icon size */
 }
 
 
